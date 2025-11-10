@@ -32,9 +32,9 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     @Override
     public void tick() {
-        notSimon.sendMessage(Text.literal("" + this.LifeTimer), true);
         if (!(this.LifeTimer <= 0)){
-            --this.LifeTimer;
+            this.LifeTimer--;
+            notSimon.sendMessage(Text.literal("" + this.LifeTimer), true);
         }
     }
 
