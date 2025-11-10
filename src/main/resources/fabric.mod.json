@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "simonsays",
+	"version": "${version}",
+	"name": "Simon Says",
+	"description": "Follow Instructions, or Die Trying...",
+	"authors": [
+		"Famine"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FamineMC/Fabric-SimonSays-1.21.X"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/simonsays/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.famine.simonsays.SimonSays"
+		],
+		"fabric-datagen": [
+			"net.famine.simonsays.SimonSaysDataGenerator"
+		],
+		"client": [
+			"net.famine.simonsays.SimonSaysClient"
+		]
+	},
+	"mixins": [
+		"simonsays.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
