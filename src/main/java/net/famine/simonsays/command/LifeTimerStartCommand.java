@@ -11,8 +11,8 @@ import net.minecraft.text.Text;
 
 public class LifeTimerStartCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("lifeTimerStart").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(4))
-                .then(CommandManager.argument("amount", IntegerArgumentType.integer(1, 100))
+        dispatcher.register(CommandManager.literal("Saw").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(4))
+                .then(CommandManager.argument("amount", IntegerArgumentType.integer(1, 10000))
                         .executes(commandContext -> {
                             ServerCommandSource source = commandContext.getSource();
                             Entity entity = source.getEntity();

@@ -4,7 +4,9 @@ import net.famine.simonsays.SimonSays;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.world.GameMode;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -35,6 +37,13 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
         if (!(this.LifeTimer <= 0)){
             this.LifeTimer--;
             notSimon.sendMessage(Text.literal("" + this.LifeTimer), true);
+        }
+        if (this.LifeTimer == 0 && !notSimon.isCreative() && !notSimon.isSpectator()){
+            notSimon.kill();
+            if (notSimon instanceof ServerPlayerEntity playerEntity){
+                playerEntity.changeGameMode(GameMode.SPECTATOR);
+            }
+
         }
     }
 
