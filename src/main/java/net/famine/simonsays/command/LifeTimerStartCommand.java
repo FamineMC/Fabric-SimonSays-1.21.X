@@ -21,6 +21,7 @@ public class LifeTimerStartCommand {
                                 LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(entity);
                                 timerComponent.setLifeTimer(lifetimer);
                                 entity.sendMessage(Text.literal("Set life timer to " + lifetimer));
+                                timerComponent.hasStartedTimer = true;
                             }
                             return 0;
                         })

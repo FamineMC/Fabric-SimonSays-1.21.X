@@ -32,14 +32,17 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
         this.LifeTimer = lifeTimer;
     }
 
+    public boolean hasStartedTimer = false;
+
     @Override
     public void tick() {
         if (!(this.LifeTimer <= 0)){
             this.LifeTimer--;
             notSimon.sendMessage(Text.literal("" + this.LifeTimer), true);
         }
-        if (this.LifeTimer == 0 && !notSimon.isCreative() && !notSimon.isSpectator()){
+        if (this.LifeTimer == 0 && hasStartedTimer){
             notSimon.kill();
+            hasStartedTimer = false;
             if (notSimon instanceof ServerPlayerEntity playerEntity){
                 playerEntity.changeGameMode(GameMode.SPECTATOR);
             }
