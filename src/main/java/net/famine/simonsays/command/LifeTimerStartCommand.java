@@ -3,6 +3,7 @@ package net.famine.simonsays.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.famine.simonsays.component.LifeTimerComponent;
+import net.famine.simonsays.component.TimeBetweenTasksComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.server.command.CommandManager;
@@ -19,9 +20,11 @@ public class LifeTimerStartCommand {
                             int lifetimer = IntegerArgumentType.getInteger(commandContext, "amount");
                             if (entity != null) {
                                 LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(entity);
+                                TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(entity);
                                 timerComponent.setLifeTimer(lifetimer);
                                 entity.sendMessage(Text.literal("Set life timer to " + lifetimer));
                                 timerComponent.hasStartedTimer = true;
+                                betweenTasksComponent.taskHasBeenAssigned = false;
                             }
                             return 0;
                         })
