@@ -17,7 +17,7 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     private final PlayerEntity notSimon;
 
-    private int BufferTimer = 0;
+    public int BufferTimer = 0;
 
     public TimeBetweenTasksComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
@@ -52,6 +52,11 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
             Random random = new Random();
             int r = random.nextInt(min, max);
             setBufferTimer(r);
+
+            int assignedTaskTime = 100;
+            taskTimerComponent.setTaskTimer(assignedTaskTime);
+
+            notSimon.sendMessage(Text.literal("task timer set to " + assignedTaskTime));
 
             //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 

@@ -1,10 +1,17 @@
 package net.famine.simonsays.component;
 
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.famine.simonsays.SimonSays;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.TypedActionResult;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -34,7 +41,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         this.TaskTimer = taskTimer;
     }
 
-
+    public Item item = Items.STICK;
 
     @Override
     public void tick() {
@@ -44,22 +51,29 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
             this.TaskTimer--;
             notSimon.sendMessage(Text.literal("task timer " + this.TaskTimer), true);
 
+
+
+
+            UseItemCallback.EVENT.register((playerEntity, world, hand) -> {
+                ItemStack stack = playerEntity.getStackInHand(hand);
+                if(stack.isOf(item) && taskCurrentlyActive){
+                    taskCurrentlyActive = false;
+                    playerEntity.getStackInHand(hand).decrement(1);
+                    notSimon.sendMessage(Text.literal("Task Complete!"));
+
+                }
+                return TypedActionResult.pass(stack);
+            });
         }
         if (this.TaskTimer > 0 && timeBetweenTasksComponent.taskHasBeenAssigned){
             notSimon.sendMessage(Text.literal("Task Assigned!"));
             timeBetweenTasksComponent.taskHasBeenAssigned = false;
             taskCurrentlyActive = true;
 
-        }
-        if (this.TaskTimer == 0 && !taskCurrentlyActive){
-            int min = 100;
-            int max = 201;
-            Random random = new Random();
-            int r = random.nextInt(min, max);
-            setTaskTimer(r);
 
 
         }
+
         if (lifeTimerComponent.hasStartedTimer && this.TaskTimer == 0 && taskCurrentlyActive){
             taskCurrentlyActive = false;
             notSimon.sendMessage(Text.literal("No Current Tasks."));

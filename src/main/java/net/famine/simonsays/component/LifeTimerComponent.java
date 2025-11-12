@@ -20,7 +20,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     private final PlayerEntity notSimon;
 
-    private int LifeTimer = 0;
+    public int LifeTimer = 0;
 
     public LifeTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
