@@ -43,7 +43,8 @@
   "custom": {
     "cardinal-components": [
       "simonsays:lifetimer",
-      "simonsays:timebetweentasks"
+      "simonsays:timebetweentasks",
+      "simonsays:tasktimer"
     ]
   }
 }

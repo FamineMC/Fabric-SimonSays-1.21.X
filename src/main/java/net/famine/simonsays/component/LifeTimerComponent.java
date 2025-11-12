@@ -12,6 +12,8 @@ import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
+import java.sql.Time;
+
 public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingComponent {
 
     public static final ComponentKey<LifeTimerComponent> KEY = ComponentRegistry.getOrCreate(SimonSays.id("lifetimer"), LifeTimerComponent.class);
@@ -36,6 +38,8 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     @Override
     public void tick() {
+        TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
+        TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
         if (!(this.LifeTimer <= 0)){
             this.LifeTimer--;
             notSimon.sendMessage(Text.literal("" + this.LifeTimer), true);
@@ -43,6 +47,8 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
         if (this.LifeTimer == 0 && hasStartedTimer){
             notSimon.kill();
             hasStartedTimer = false;
+            betweenTasksComponent.setBufferTimer(0);
+            taskTimerComponent.setTaskTimer(0);
             if (notSimon instanceof ServerPlayerEntity playerEntity){
                 playerEntity.changeGameMode(GameMode.SPECTATOR);
             }

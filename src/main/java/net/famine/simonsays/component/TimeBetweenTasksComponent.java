@@ -38,24 +38,24 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
     @Override
     public void tick() {
         LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(notSimon);
-        if (!(this.BufferTimer <= 0) && !taskHasBeenAssigned && timerComponent.hasStartedTimer){
+        TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
+        if (!(this.BufferTimer <= 0) && !taskTimerComponent.taskCurrentlyActive && timerComponent.hasStartedTimer){
             this.BufferTimer--;
-            notSimon.sendMessage(Text.literal("Time Before Next Task Is: " + this.BufferTimer));
+            //notSimon.sendMessage(Text.literal("buffer timer: " + this.BufferTimer), true);
 
         }
 
 
         if (this.BufferTimer == 0){
-            int min = 1200;
-            int max = 2400;
+            int min = 50;
+            int max = 101;
             Random random = new Random();
             int r = random.nextInt(min, max);
             setBufferTimer(r);
 
-            notSimon.sendMessage(Text.literal("Time Before Next Task Is Set To: " + r));
+            //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 
             if (timerComponent.hasStartedTimer){
-                notSimon.sendMessage(Text.literal("Task Assigned!!"));
                 taskHasBeenAssigned = true;
             }
 
