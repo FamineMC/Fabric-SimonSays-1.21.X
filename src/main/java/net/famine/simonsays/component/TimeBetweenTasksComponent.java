@@ -17,18 +17,20 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     private final PlayerEntity notSimon;
 
-    public int BufferTimer = 0;
+    public int bufferTimer = 0;
+
+    public int assignedTaskTime;
 
     public TimeBetweenTasksComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
     }
 
     public int getBufferTimer() {
-        return this.BufferTimer;
+        return this.bufferTimer;
     }
 
     public void setBufferTimer(int bufferTimer) {
-        this.BufferTimer = bufferTimer;
+        this.bufferTimer = bufferTimer;
     }
 
     public boolean taskHasBeenAssigned = false;
@@ -39,24 +41,19 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
     public void tick() {
         LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(notSimon);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
-        if (!(this.BufferTimer <= 0) && !taskTimerComponent.taskCurrentlyActive && timerComponent.hasStartedTimer){
-            this.BufferTimer--;
+        if (!(this.bufferTimer <= 0) && !taskTimerComponent.taskCurrentlyActive && timerComponent.hasStartedTimer){
+            this.bufferTimer--;
             //notSimon.sendMessage(Text.literal("buffer timer: " + this.BufferTimer), true);
 
         }
 
 
-        if (this.BufferTimer == 0){
+        if (this.bufferTimer == 0){
             int min = 50;
             int max = 101;
             Random random = new Random();
             int r = random.nextInt(min, max);
             setBufferTimer(r);
-
-            int assignedTaskTime = 100;
-            taskTimerComponent.setTaskTimer(assignedTaskTime);
-
-            notSimon.sendMessage(Text.literal("task timer set to " + assignedTaskTime));
 
             //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 
@@ -71,11 +68,11 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
-        this.BufferTimer = nbtCompound.getInt("timebetweentaskscount");
+        this.bufferTimer = nbtCompound.getInt("timebetweentaskscount");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
-        nbtCompound.putInt("timebetweentaskscount", this.BufferTimer);
+        nbtCompound.putInt("timebetweentaskscount", this.bufferTimer);
     }
 }

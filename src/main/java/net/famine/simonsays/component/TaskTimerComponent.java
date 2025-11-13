@@ -1,6 +1,5 @@
 package net.famine.simonsays.component;
 
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.famine.simonsays.SimonSays;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,14 +9,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
-
-import java.util.Random;
 
 public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingComponent {
 
@@ -25,7 +21,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     private final PlayerEntity notSimon;
 
-    private int TaskTimer = 0;
+    private int taskTimer = 0;
 
     public boolean taskCurrentlyActive;
 
@@ -34,11 +30,11 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public int getTaskTimer() {
-        return this.TaskTimer;
+        return this.taskTimer;
     }
 
     public void setTaskTimer(int taskTimer) {
-        this.TaskTimer = taskTimer;
+        this.taskTimer = taskTimer;
     }
 
     public Item item = Items.STICK;
@@ -47,34 +43,24 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public void tick() {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(notSimon);
         TimeBetweenTasksComponent timeBetweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
-        if (!(this.TaskTimer <= 0) && taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
-            this.TaskTimer--;
-            notSimon.sendMessage(Text.literal("task timer " + this.TaskTimer), true);
 
+        if (!(this.taskTimer <= 0) && taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
+            this.taskTimer--;
+            notSimon.sendMessage(Text.literal("task timer " + this.taskTimer), true);
 
-
-
-            UseItemCallback.EVENT.register((playerEntity, world, hand) -> {
-                ItemStack stack = playerEntity.getStackInHand(hand);
-                if(stack.isOf(item) && taskCurrentlyActive){
-                    taskCurrentlyActive = false;
-                    playerEntity.getStackInHand(hand).decrement(1);
-                    notSimon.sendMessage(Text.literal("Task Complete!"));
-
-                }
-                return TypedActionResult.pass(stack);
-            });
         }
-        if (this.TaskTimer > 0 && timeBetweenTasksComponent.taskHasBeenAssigned){
+        if (timeBetweenTasksComponent.taskHasBeenAssigned){
+
             notSimon.sendMessage(Text.literal("Task Assigned!"));
             timeBetweenTasksComponent.taskHasBeenAssigned = false;
+            SimonEvents.obtainItemTask(notSimon);
+            setTaskTimer(timeBetweenTasksComponent.assignedTaskTime);
+            notSimon.sendMessage(Text.literal("task timer set to " + timeBetweenTasksComponent.assignedTaskTime));
             taskCurrentlyActive = true;
-
-
 
         }
 
-        if (lifeTimerComponent.hasStartedTimer && this.TaskTimer == 0 && taskCurrentlyActive){
+        if (lifeTimerComponent.hasStartedTimer && this.taskTimer == 0 && taskCurrentlyActive){
             taskCurrentlyActive = false;
             notSimon.sendMessage(Text.literal("No Current Tasks."));
         }
@@ -84,11 +70,11 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
-        this.TaskTimer = nbtCompound.getInt("tasktimercount");
+        this.taskTimer = nbtCompound.getInt("tasktimercount");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
-        nbtCompound.putInt("tasktimercount", this.TaskTimer);
+        nbtCompound.putInt("tasktimercount", this.taskTimer);
     }
 }

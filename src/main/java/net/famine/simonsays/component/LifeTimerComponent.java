@@ -12,26 +12,24 @@ import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-import java.sql.Time;
-
 public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingComponent {
 
     public static final ComponentKey<LifeTimerComponent> KEY = ComponentRegistry.getOrCreate(SimonSays.id("lifetimer"), LifeTimerComponent.class);
 
     private final PlayerEntity notSimon;
 
-    public int LifeTimer = 0;
+    public int lifeTimer = 0;
 
     public LifeTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
     }
 
     public int getLifeTimer() {
-        return this.LifeTimer;
+        return this.lifeTimer;
     }
 
     public void setLifeTimer(int lifeTimer) {
-        this.LifeTimer = lifeTimer;
+        this.lifeTimer = lifeTimer;
     }
 
     public boolean hasStartedTimer = false;
@@ -40,11 +38,11 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public void tick() {
         TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
-        if (!(this.LifeTimer <= 0)){
-            this.LifeTimer--;
-            notSimon.sendMessage(Text.literal("" + this.LifeTimer), true);
+        if (!(this.lifeTimer <= 0)){
+            this.lifeTimer--;
+            notSimon.sendMessage(Text.literal("" + this.lifeTimer), true);
         }
-        if (this.LifeTimer == 0 && hasStartedTimer){
+        if (this.lifeTimer == 0 && hasStartedTimer){
             notSimon.kill();
             hasStartedTimer = false;
             betweenTasksComponent.setBufferTimer(0);
@@ -58,11 +56,11 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
-        this.LifeTimer = nbtCompound.getInt("lifetimercount");
+        this.lifeTimer = nbtCompound.getInt("lifetimercount");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
-        nbtCompound.putInt("lifetimercount", this.LifeTimer);
+        nbtCompound.putInt("lifetimercount", this.lifeTimer);
     }
 }

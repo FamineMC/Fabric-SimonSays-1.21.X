@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.famine.simonsays.command.LifeTimerStartCommand;
 import net.famine.simonsays.component.LifeTimerComponent;
+import net.famine.simonsays.component.SimonEvents;
 import net.famine.simonsays.component.TaskTimerComponent;
 import net.famine.simonsays.component.TimeBetweenTasksComponent;
 import net.minecraft.entity.player.PlayerEntity;
