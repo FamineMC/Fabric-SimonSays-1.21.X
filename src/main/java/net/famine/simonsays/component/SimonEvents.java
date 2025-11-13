@@ -51,7 +51,7 @@ public class SimonEvents {
                 player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
                 player.sendMessage(Text.literal("Task Complete!"));
 
-                stack = null;
+
 
 
 
