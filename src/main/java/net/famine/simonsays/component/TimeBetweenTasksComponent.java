@@ -55,6 +55,7 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
             int r = random.nextInt(min, max);
             setBufferTimer(r);
 
+
             //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 
             if (timerComponent.hasStartedTimer){

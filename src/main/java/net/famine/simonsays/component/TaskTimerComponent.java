@@ -1,6 +1,9 @@
 package net.famine.simonsays.component;
 
 import net.famine.simonsays.SimonSays;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -21,15 +24,26 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     private final PlayerEntity notSimon;
 
-    private int taskTimer = 0;
+    public int taskTimer = 0;
 
     public boolean taskCurrentlyActive;
 
+    public boolean taskOneActive;
+    public boolean taskTwoActive;
+    public boolean taskThreeActive;
+    public boolean taskFourActive;
+    public boolean taskFiveActive;
+    public boolean taskSixActive;
+
+
+
     public List<Item> itemPickupTaskItems = new ArrayList<>();
     public List<Item> consumeItemTaskItems = new ArrayList<>();
+    public List<Entity> killEntityTaskEntity = new ArrayList<>();
 
     public Item randomPickupItem;
     public Item randomConsumeItem;
+    public Entity randomEntity;
 
     public TaskTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
@@ -37,10 +51,18 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         itemPickupTaskItems.add(Items.WOODEN_SWORD);
         itemPickupTaskItems.add(Items.OAK_FENCE);
         itemPickupTaskItems.add(Items.COBBLESTONE_WALL);
+
         consumeItemTaskItems.add(Items.COOKED_BEEF);
-        consumeItemTaskItems.add(Items.PORKCHOP);
+        consumeItemTaskItems.add(Items.COOKED_PORKCHOP);
         consumeItemTaskItems.add(Items.COOKED_CHICKEN);
         consumeItemTaskItems.add(Items.COOKED_MUTTON);
+
+
+        //** these didn't work**
+        //killEntityTaskEntity.add(EntityType.PIG);
+        //killEntityTaskEntity.add(EntityType.COW);
+        //killEntityTaskEntity.add(EntityType.ZOMBIE);
+        //killEntityTaskEntity.add(EntityType.CHICKEN);
 
     }
 
@@ -56,6 +78,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         KEY.sync(this.notSimon);
         KEY.sync(this.itemPickupTaskItems);
         KEY.sync(this.randomPickupItem);
+        KEY.sync(this.randomEntity);
     }
 
     @Override
@@ -81,6 +104,10 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
 
                     notSimon.sendMessage(Text.literal("Pick up the: " + randomPickup));
+
+                    taskOneActive = true;
+                    taskTwoActive = false;
+
                 }
                 case 1 -> {
                     Item randomConsume = consumeItemTaskItems.get(notSimon.getRandom().nextInt(consumeItemTaskItems.size()));
@@ -90,6 +117,20 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 3600;
 
                     notSimon.sendMessage(Text.literal("Consume the: " + randomConsume));
+
+                    taskOneActive = false;
+                    taskTwoActive = true;
+                }
+                case 2 ->{
+                    Entity randomEntityEntity = killEntityTaskEntity.get(notSimon.getRandom().nextInt(killEntityTaskEntity.size()));
+
+                    this.randomEntity = randomEntityEntity;
+
+                    timeBetweenTasksComponent.assignedTaskTime = 3600;
+
+                    notSimon.sendMessage(Text.literal("Kill the: " + randomEntityEntity));
+
+
                 }
             }
             setTaskTimer(timeBetweenTasksComponent.assignedTaskTime);
