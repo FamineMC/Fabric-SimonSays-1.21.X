@@ -39,6 +39,10 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     public Item item = Items.STICK;
 
+    public void sync() {
+        KEY.sync(this.notSimon);
+    }
+
     @Override
     public void tick() {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(notSimon);
@@ -47,7 +51,6 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         if (!(this.taskTimer <= 0) && taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
             this.taskTimer--;
             notSimon.sendMessage(Text.literal("task timer " + this.taskTimer), true);
-
         }
         if (timeBetweenTasksComponent.taskHasBeenAssigned){
 

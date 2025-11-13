@@ -4,6 +4,7 @@ import net.famine.simonsays.SimonSays;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
@@ -32,6 +33,9 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
         this.lifeTimer = lifeTimer;
     }
 
+    public void sync() {
+        KEY.sync(this.notSimon);
+    }
     public boolean hasStartedTimer = false;
 
     @Override
@@ -40,17 +44,39 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
         if (!(this.lifeTimer <= 0)){
             this.lifeTimer--;
+            sync();
             notSimon.sendMessage(Text.literal("" + this.lifeTimer), true);
         }
         if (this.lifeTimer == 0 && hasStartedTimer){
             notSimon.kill();
             hasStartedTimer = false;
+            sync();
             betweenTasksComponent.setBufferTimer(0);
             taskTimerComponent.setTaskTimer(0);
             if (notSimon instanceof ServerPlayerEntity playerEntity){
                 playerEntity.changeGameMode(GameMode.SPECTATOR);
             }
 
+        }
+    }
+
+    public void addToSyncedLifeTimer(PlayerEntity entity, int add) {
+        MinecraftServer server = entity.getWorld().getServer();
+        if (server == null) return;
+        for (var players : server.getPlayerManager().getPlayerList()) {
+            LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
+            timerComponent.setLifeTimer(timerComponent.lifeTimer + add);
+            sync();
+        }
+    }
+
+    public void subtractFromSyncedLifeTimer(PlayerEntity entity, int subtract) {
+        MinecraftServer server = entity.getWorld().getServer();
+        if (server == null) return;
+        for (var players : server.getPlayerManager().getPlayerList()) {
+            LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
+            timerComponent.setLifeTimer(timerComponent.lifeTimer - subtract);
+            sync();
         }
     }
 
