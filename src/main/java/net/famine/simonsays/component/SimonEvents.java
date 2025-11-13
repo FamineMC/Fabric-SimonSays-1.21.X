@@ -18,6 +18,7 @@ import java.util.List;
 
 public class SimonEvents {
 
+
     public Item itemSelection;
 
     public static void obtainItemTask(PlayerEntity player){
@@ -41,25 +42,7 @@ public class SimonEvents {
 
 
 
-        UseItemCallback.EVENT.register((playerEntity, world, hand) -> {
-            ItemStack stack = playerEntity.getStackInHand(hand);
-            if(stack.isOf(randomItem) && taskTimerComponent.taskCurrentlyActive){
-                taskTimerComponent.taskCurrentlyActive = false;
-                playerEntity.getInventory().clear();
-                player.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
-                lifeTimerComponent.lifeTimer += 300;
-                player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
-                player.sendMessage(Text.literal("Task Complete!"));
 
-
-
-
-
-
-
-            }
-            return TypedActionResult.pass(stack);
-        });
     }
     public static void killMobTask(PlayerEntity player){
 
