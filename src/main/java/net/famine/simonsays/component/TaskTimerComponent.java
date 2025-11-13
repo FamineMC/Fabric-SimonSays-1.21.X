@@ -1,19 +1,19 @@
 package net.famine.simonsays.component;
 
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.famine.simonsays.SimonSays;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
-import net.minecraft.util.TypedActionResult;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingComponent {
 
@@ -25,8 +25,23 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     public boolean taskCurrentlyActive;
 
+    public List<Item> itemPickupTaskItems = new ArrayList<>();
+    public List<Item> consumeItemTaskItems = new ArrayList<>();
+
+    public Item randomPickupItem;
+    public Item randomConsumeItem;
+
     public TaskTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
+        itemPickupTaskItems.add(Items.STICK);
+        itemPickupTaskItems.add(Items.WOODEN_SWORD);
+        itemPickupTaskItems.add(Items.OAK_FENCE);
+        itemPickupTaskItems.add(Items.COBBLESTONE_WALL);
+        consumeItemTaskItems.add(Items.COOKED_BEEF);
+        consumeItemTaskItems.add(Items.PORKCHOP);
+        consumeItemTaskItems.add(Items.COOKED_CHICKEN);
+        consumeItemTaskItems.add(Items.COOKED_MUTTON);
+
     }
 
     public int getTaskTimer() {
@@ -37,16 +52,17 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         this.taskTimer = taskTimer;
     }
 
-    public Item item = Items.STICK;
-
     public void sync() {
         KEY.sync(this.notSimon);
+        KEY.sync(this.itemPickupTaskItems);
+        KEY.sync(this.randomPickupItem);
     }
 
     @Override
     public void tick() {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(notSimon);
         TimeBetweenTasksComponent timeBetweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
+        int randomTask = this.notSimon.getRandom().nextInt(2);
 
         if (!(this.taskTimer <= 0) && taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
             this.taskTimer--;
@@ -56,7 +72,26 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
             notSimon.sendMessage(Text.literal("Task Assigned!"));
             timeBetweenTasksComponent.taskHasBeenAssigned = false;
-            SimonEvents.obtainItemTask(notSimon);
+            switch (randomTask) {
+                case 0 -> {
+                    Item randomPickup = itemPickupTaskItems.get(notSimon.getRandom().nextInt(itemPickupTaskItems.size()));
+
+                    this.randomPickupItem = randomPickup;
+
+                    timeBetweenTasksComponent.assignedTaskTime = 2400;
+
+                    notSimon.sendMessage(Text.literal("Pick up the: " + randomPickup));
+                }
+                case 1 -> {
+                    Item randomConsume = consumeItemTaskItems.get(notSimon.getRandom().nextInt(consumeItemTaskItems.size()));
+
+                    this.randomConsumeItem = randomConsume;
+
+                    timeBetweenTasksComponent.assignedTaskTime = 3600;
+
+                    notSimon.sendMessage(Text.literal("Consume the: " + randomConsume));
+                }
+            }
             setTaskTimer(timeBetweenTasksComponent.assignedTaskTime);
             notSimon.sendMessage(Text.literal("task timer set to " + timeBetweenTasksComponent.assignedTaskTime));
             taskCurrentlyActive = true;

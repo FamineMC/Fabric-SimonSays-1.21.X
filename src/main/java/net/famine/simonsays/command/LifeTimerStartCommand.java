@@ -16,57 +16,40 @@ public class LifeTimerStartCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("Saw").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(4))
                 .then(CommandManager.argument("amount", IntegerArgumentType.integer(1, 24000))
-                        .executes(commandContext -> {
-                            ServerCommandSource source = commandContext.getSource();
-                            MinecraftServer server = source.getServer();
-                            Entity entity = source.getEntity();
-                            int lifetimer = IntegerArgumentType.getInteger(commandContext, "amount");
-                            for (var players : server.getPlayerManager().getPlayerList()){
-                                LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
-                                TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(players);
-                                timerComponent.setLifeTimer(lifetimer);
-                                timerComponent.hasStartedTimer = true;
-                                betweenTasksComponent.taskHasBeenAssigned = false;
-
-                            }
-                            if (entity != null) {
-                                entity.sendMessage(Text.literal("Set global life timer to " + lifetimer));
-                            }
-                            return 0;
-                        }).then(CommandManager.argument("commandUserExcluded", BoolArgumentType.bool()))
-                        .executes(commandContext -> {
-                            ServerCommandSource source = commandContext.getSource();
-                            MinecraftServer server = source.getServer();
-                            Entity entity = source.getEntity();
-                            boolean excluded = BoolArgumentType.getBool(commandContext, "commandUserExcluded");
-                            int lifetimer = IntegerArgumentType.getInteger(commandContext, "amount");
-                            if (excluded) {
-                                for (var players : server.getPlayerManager().getPlayerList()) {
-                                    if (players != entity) {
+                        .then(CommandManager.argument("commandUserExcluded", BoolArgumentType.bool())
+                                .executes(commandContext -> {
+                                ServerCommandSource source = commandContext.getSource();
+                                MinecraftServer server = source.getServer();
+                                Entity entity = source.getEntity();
+                                boolean excluded = BoolArgumentType.getBool(commandContext, "commandUserExcluded");
+                                int lifetimer = IntegerArgumentType.getInteger(commandContext, "amount");
+                                if (excluded) {
+                                    for (var players : server.getPlayerManager().getPlayerList()) {
+                                        if (players != entity) {
+                                            LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
+                                            TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(players);
+                                            timerComponent.setLifeTimer(lifetimer);
+                                            timerComponent.hasStartedTimer = true;
+                                            betweenTasksComponent.taskHasBeenAssigned = false;
+                                        }
+                                    }
+                                    if (entity != null) {
+                                        entity.sendMessage(Text.literal("Set global life timer to " + lifetimer + " without including self"));
+                                    }
+                                } else {
+                                    for (var players : server.getPlayerManager().getPlayerList()){
                                         LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
                                         TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(players);
                                         timerComponent.setLifeTimer(lifetimer);
                                         timerComponent.hasStartedTimer = true;
                                         betweenTasksComponent.taskHasBeenAssigned = false;
                                     }
+                                    if (entity != null) {
+                                        entity.sendMessage(Text.literal("Set global life timer to " + lifetimer));
+                                    }
                                 }
-                                if (entity != null) {
-                                    entity.sendMessage(Text.literal("Set global life timer to " + lifetimer + " without including self"));
-                                }
-                            } else {
-                                for (var players : server.getPlayerManager().getPlayerList()){
-                                    LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
-                                    TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(players);
-                                    timerComponent.setLifeTimer(lifetimer);
-                                    timerComponent.hasStartedTimer = true;
-                                    betweenTasksComponent.taskHasBeenAssigned = false;
-                                }
-                                if (entity != null) {
-                                    entity.sendMessage(Text.literal("Set global life timer to " + lifetimer));
-                                }
-                            }
-                            return 0;
-                        })
+                                return 0;
+                                }))
                 )
         );
     }

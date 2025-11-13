@@ -3,13 +3,16 @@ package net.famine.simonsays;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.famine.simonsays.command.LifeTimerStartCommand;
 import net.famine.simonsays.component.LifeTimerComponent;
-import net.famine.simonsays.component.SimonEvents;
 import net.famine.simonsays.component.TaskTimerComponent;
 import net.famine.simonsays.component.TimeBetweenTasksComponent;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import org.jetbrains.annotations.NotNull;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
@@ -25,6 +28,19 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
 	public void onInitialize() {
         CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
             LifeTimerStartCommand.register(commandDispatcher);
+        });
+        UseItemCallback.EVENT.register((playerEntity, world, hand) -> {
+            ItemStack stack = playerEntity.getStackInHand(hand);
+            LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(playerEntity);
+            TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(playerEntity);
+            if(stack.isOf(taskTimerComponent.randomConsumeItem) && taskTimerComponent.taskCurrentlyActive){
+                taskTimerComponent.taskCurrentlyActive = false;
+                playerEntity.getStackInHand(hand).decrement(1);
+                lifeTimerComponent.lifeTimer += 600;
+                playerEntity.sendMessage(Text.literal("Task Complete!"));
+
+            }
+            return TypedActionResult.pass(stack);
         });
 	}
 
