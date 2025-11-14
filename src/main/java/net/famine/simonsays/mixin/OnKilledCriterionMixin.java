@@ -20,12 +20,13 @@ public class OnKilledCriterionMixin {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(player);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
 
-        if(entity == taskTimerComponent.randomEntity && killingDamage.isDirect()){
+        if(entity.getType() == taskTimerComponent.randomEntity && killingDamage.isDirect() && taskTimerComponent.taskThreeActive){
             taskTimerComponent.taskCurrentlyActive = false;
             player.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
             lifeTimerComponent.addToSyncedLifeTimer(player, 300);
             player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
             player.sendMessage(Text.literal("Task Complete!"));
+
         }
     }
 }

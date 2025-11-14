@@ -20,9 +20,8 @@ public class PlayerInventoryMixin {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(player);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
 
-        if(stack.isOf(taskTimerComponent.randomPickupItem) && taskTimerComponent.taskCurrentlyActive){
+        if(stack.isOf(taskTimerComponent.randomPickupItem) && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskOneActive){
             taskTimerComponent.taskCurrentlyActive = false;
-            player.getInventory().clear();
             player.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
             lifeTimerComponent.addToSyncedLifeTimer(player, 300);
             player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));

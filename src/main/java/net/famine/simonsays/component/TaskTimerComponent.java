@@ -39,11 +39,11 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     public List<Item> itemPickupTaskItems = new ArrayList<>();
     public List<Item> consumeItemTaskItems = new ArrayList<>();
-    public List<Entity> killEntityTaskEntity = new ArrayList<>();
+    public List<EntityType<?>> killEntityTaskEntity = new ArrayList<>();
 
     public Item randomPickupItem;
     public Item randomConsumeItem;
-    public Entity randomEntity;
+    public EntityType<?> randomEntity;
 
     public TaskTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
@@ -59,10 +59,10 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
 
         //** these didn't work**
-        //killEntityTaskEntity.add(EntityType.PIG);
-        //killEntityTaskEntity.add(EntityType.COW);
-        //killEntityTaskEntity.add(EntityType.ZOMBIE);
-        //killEntityTaskEntity.add(EntityType.CHICKEN);
+        killEntityTaskEntity.add(EntityType.PIG);
+        killEntityTaskEntity.add(EntityType.COW);
+        killEntityTaskEntity.add(EntityType.ZOMBIE);
+        killEntityTaskEntity.add(EntityType.CHICKEN);
 
     }
 
@@ -85,7 +85,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public void tick() {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(notSimon);
         TimeBetweenTasksComponent timeBetweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
-        int randomTask = this.notSimon.getRandom().nextInt(2);
+        int randomTask = this.notSimon.getRandom().nextInt(3);
 
         if (!(this.taskTimer <= 0) && taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
             this.taskTimer--;
@@ -107,6 +107,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
                     taskOneActive = true;
                     taskTwoActive = false;
+                    taskThreeActive = false;
 
                 }
                 case 1 -> {
@@ -120,15 +121,20 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
                     taskOneActive = false;
                     taskTwoActive = true;
+                    taskThreeActive = false;
                 }
                 case 2 ->{
-                    Entity randomEntityEntity = killEntityTaskEntity.get(notSimon.getRandom().nextInt(killEntityTaskEntity.size()));
+                    EntityType<?> randomEntityEntity = killEntityTaskEntity.get(notSimon.getRandom().nextInt(killEntityTaskEntity.size()));
 
                     this.randomEntity = randomEntityEntity;
 
                     timeBetweenTasksComponent.assignedTaskTime = 3600;
 
                     notSimon.sendMessage(Text.literal("Kill the: " + randomEntityEntity));
+
+                    taskOneActive = false;
+                    taskTwoActive = false;
+                    taskThreeActive = true;
 
 
                 }
