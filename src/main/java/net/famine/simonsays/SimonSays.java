@@ -5,10 +5,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.famine.simonsays.command.LifeTimerStartCommand;
 import net.famine.simonsays.component.LifeTimerComponent;
 import net.famine.simonsays.component.TaskTimerComponent;
 import net.famine.simonsays.component.TimeBetweenTasksComponent;
+import net.famine.simonsays.network.KeybindTaskPayload;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -54,6 +57,8 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
             }
             return TypedActionResult.pass(stack);
         });
+        PayloadTypeRegistry.playC2S().register(KeybindTaskPayload.ID, KeybindTaskPayload.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(KeybindTaskPayload.ID, new KeybindTaskPayload.Receiver());
 	}
 
 	public static @NotNull Identifier id(String name) {

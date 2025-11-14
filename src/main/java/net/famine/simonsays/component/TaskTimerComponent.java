@@ -45,8 +45,6 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public boolean taskFiveActive;
     public boolean taskSixActive;
 
-
-
     public List<Item> itemPickupTaskItems = new ArrayList<>();
     public List<Item> consumeItemTaskItems = new ArrayList<>();
     public List<EntityType<?>> killEntityTaskEntity = new ArrayList<>();
@@ -183,12 +181,12 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     taskSixActive = false;
                 }
                 case 4 ->{
-                    this.randomKeybind = notSimon.getRandom().nextInt(keybindTasksKeybinds.size());
+                    this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
 
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Touch The: ").append(Text.translatable(InputUtil.fromKeyCode(this.randomKeybind, 0).getTranslationKey())));
+                    notSimon.sendMessage(Text.literal("Touch The: ").append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText()));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
@@ -197,12 +195,12 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     taskSixActive = false;
                 }
                 case 5 ->{
-                    this.randomKeybind = notSimon.getRandom().nextInt(keybindTasksKeybinds.size());
+                    this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
 
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Don't Touch The: ").append(Text.translatable(InputUtil.fromKeyCode(this.randomKeybind, 0).getTranslationKey())));
+                    notSimon.sendMessage(Text.literal("Don't Touch The: ").append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText()));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
