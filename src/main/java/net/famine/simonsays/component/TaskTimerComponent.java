@@ -186,7 +186,9 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Touch The: ").append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText()));
+                    notSimon.sendMessage(Text.literal("Touch The: ")
+                            .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
+                            .append(Text.literal(" Key")));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
@@ -200,7 +202,9 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Don't Touch The: ").append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText()));
+                    notSimon.sendMessage(Text.literal("Don't Touch The: ")
+                            .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
+                            .append(Text.literal(" Key")));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
