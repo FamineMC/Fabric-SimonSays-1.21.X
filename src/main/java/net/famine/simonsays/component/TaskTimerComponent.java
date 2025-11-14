@@ -1,6 +1,9 @@
 package net.famine.simonsays.component;
 
 import net.famine.simonsays.SimonSays;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -17,7 +20,9 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 import org.lwjgl.glfw.GLFW;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -46,7 +51,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public List<Item> consumeItemTaskItems = new ArrayList<>();
     public List<EntityType<?>> killEntityTaskEntity = new ArrayList<>();
     public static List<RegistryEntry<StatusEffect>> potionEffectTaskEffect = new ArrayList<>();
-    public static List<Integer> keybindTasksKeybinds = new ArrayList<Integer>();
+    public static List<Integer> keybindTasksKeybinds = new ArrayList<>();
 
     public Item randomPickupItem;
     public Item randomConsumeItem;
@@ -78,9 +83,9 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         potionEffectTaskEffect.add(StatusEffects.SPEED);
         potionEffectTaskEffect.add(StatusEffects.POISON);
 
-        keybindTasksKeybinds.add(GLFW.GLFW_KEY_SPACE);
-        keybindTasksKeybinds.add(GLFW.GLFW_MOUSE_BUTTON_1);
-        keybindTasksKeybinds.add(GLFW.GLFW_MOUSE_BUTTON_2);
+        keybindTasksKeybinds.add(InputUtil.GLFW_KEY_SPACE);
+        keybindTasksKeybinds.add(InputUtil.GLFW_KEY_LEFT_SHIFT);
+        keybindTasksKeybinds.add(InputUtil.GLFW_KEY_W);
     }
 
     public int getTaskTimer() {
@@ -119,7 +124,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Pick up the: " + randomPickup));
+                    notSimon.sendMessage(Text.literal("Pick up the: ").append(randomPickup.getName()));
 
                     taskOneActive = true;
                     taskTwoActive = false;
@@ -136,7 +141,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 3600;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Consume the: " + randomConsume));
+                    notSimon.sendMessage(Text.literal("Consume the: ").append(this.randomConsumeItem.getName()));
 
                     taskOneActive = false;
                     taskTwoActive = true;
@@ -153,7 +158,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 3600;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Kill the: " + randomEntityEntity));
+                    notSimon.sendMessage(Text.literal("Kill the: ").append(this.randomEntity.getName()));
 
                     taskOneActive = false;
                     taskTwoActive = false;
@@ -169,7 +174,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Apply The Effect: " + potionEffectTaskEffect.get(randomStatus)));
+                    notSimon.sendMessage(Text.literal("Apply The Effect: ").append(Text.translatable(potionEffectTaskEffect.get(randomStatus).value().getTranslationKey())));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
@@ -178,12 +183,12 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     taskSixActive = false;
                 }
                 case 4 ->{
-                    this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
+                    this.randomKeybind = notSimon.getRandom().nextInt(keybindTasksKeybinds.size());
 
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Touch The: " + keybindTasksKeybinds.get(randomKeybind) + " Key"));
+                    notSimon.sendMessage(Text.literal("Touch The: ").append(Text.translatable(InputUtil.fromKeyCode(this.randomKeybind, 0).getTranslationKey())));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
@@ -192,12 +197,12 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     taskSixActive = false;
                 }
                 case 5 ->{
-                    this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
+                    this.randomKeybind = notSimon.getRandom().nextInt(keybindTasksKeybinds.size());
 
                     timeBetweenTasksComponent.assignedTaskTime = 2400;
                     sync();
 
-                    notSimon.sendMessage(Text.literal("Don't Touch The: " + keybindTasksKeybinds.get(randomKeybind) + " Key"));
+                    notSimon.sendMessage(Text.literal("Don't Touch The: ").append(Text.translatable(InputUtil.fromKeyCode(this.randomKeybind, 0).getTranslationKey())));
                     taskOneActive = false;
                     taskTwoActive = false;
                     taskThreeActive = false;
@@ -209,24 +214,23 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
             setTaskTimer(timeBetweenTasksComponent.assignedTaskTime);
             notSimon.sendMessage(Text.literal("task timer set to " + timeBetweenTasksComponent.assignedTaskTime));
             taskCurrentlyActive = true;
-
         }
 
         if (lifeTimerComponent.hasStartedTimer && this.taskTimer == 0 && taskCurrentlyActive){
             taskCurrentlyActive = false;
             notSimon.sendMessage(Text.literal("No Current Tasks."));
         }
-
-
     }
 
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.taskTimer = nbtCompound.getInt("tasktimercount");
+        this.randomKeybind = nbtCompound.getInt("randomKeybind");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         nbtCompound.putInt("tasktimercount", this.taskTimer);
+        nbtCompound.putInt("randomKeybind", this.randomKeybind);
     }
 }

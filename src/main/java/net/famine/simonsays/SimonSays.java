@@ -2,6 +2,7 @@ package net.famine.simonsays;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.famine.simonsays.command.LifeTimerStartCommand;
@@ -19,6 +20,8 @@ import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.awt.event.InputEvent;
 
 public class SimonSays implements ModInitializer, EntityComponentInitializer {
 	public static final String MOD_ID = "simonsays";
@@ -59,8 +62,8 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.beginRegistration(PlayerEntity.class, LifeTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(LifeTimerComponent::new);
-		registry.beginRegistration(PlayerEntity.class, TimeBetweenTasksComponent.KEY).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(TimeBetweenTasksComponent::new);
-		registry.beginRegistration(PlayerEntity.class, TaskTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(TaskTimerComponent::new);
+        registry.beginRegistration(PlayerEntity.class, LifeTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(LifeTimerComponent::new);
+		registry.beginRegistration(PlayerEntity.class, TimeBetweenTasksComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(TimeBetweenTasksComponent::new);
+		registry.beginRegistration(PlayerEntity.class, TaskTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(TaskTimerComponent::new);
     }
 }
