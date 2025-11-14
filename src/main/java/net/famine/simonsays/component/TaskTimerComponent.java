@@ -67,7 +67,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         consumeItemTaskItems.add(Items.COOKED_MUTTON);
 
 
-        //** these didn't work**
+
         killEntityTaskEntity.add(EntityType.PIG);
         killEntityTaskEntity.add(EntityType.COW);
         killEntityTaskEntity.add(EntityType.ZOMBIE);
