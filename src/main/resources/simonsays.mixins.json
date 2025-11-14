@@ -4,8 +4,9 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ExampleMixin",
+    "OnKilledCriterionMixin",
     "PlayerInventoryMixin",
-    "OnKilledCriterionMixin"
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

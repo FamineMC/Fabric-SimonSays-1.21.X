@@ -15,13 +15,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(OnKilledCriterion.class)
 public class OnKilledCriterionMixin {
-    @Inject(at = @At("HEAD"), method = "trigger", cancellable = true)
+    @Inject(at = @At("TAIL"), method = "trigger", cancellable = true)
     private void init(ServerPlayerEntity player, Entity entity, DamageSource killingDamage, CallbackInfo ci){
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(player);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
 
-        if(entity.getType() == taskTimerComponent.randomEntity && killingDamage.isDirect() && taskTimerComponent.taskThreeActive){
+        if(entity.getType() == taskTimerComponent.randomEntity && killingDamage.isDirect() && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskThreeActive){
             taskTimerComponent.taskCurrentlyActive = false;
+            taskTimerComponent.taskOneActive = false;
+            taskTimerComponent.taskTwoActive = false;
+            taskTimerComponent.taskThreeActive = false;
+            taskTimerComponent.taskFourActive = false;
             player.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
             lifeTimerComponent.addToSyncedLifeTimer(player, 300);
             player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));

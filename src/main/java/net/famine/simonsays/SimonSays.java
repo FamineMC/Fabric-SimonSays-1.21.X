@@ -35,11 +35,16 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
             TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(playerEntity);
             if(stack.isOf(taskTimerComponent.randomConsumeItem) && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskTwoActive){
                 taskTimerComponent.taskCurrentlyActive = false;
+                taskTimerComponent.taskOneActive = false;
+                taskTimerComponent.taskTwoActive = false;
+                taskTimerComponent.taskThreeActive = false;
+                taskTimerComponent.taskFourActive = false;
                 playerEntity.getStackInHand(hand).decrement(1);
                 playerEntity.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 600);
                 playerEntity.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
                 playerEntity.sendMessage(Text.literal("Task Complete!"));
+
 
             }
             return TypedActionResult.pass(stack);
