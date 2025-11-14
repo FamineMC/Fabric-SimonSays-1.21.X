@@ -96,7 +96,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public void tick() {
         LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(notSimon);
         TimeBetweenTasksComponent timeBetweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
-        int randomTask = this.notSimon.getRandom().nextInt(3);
+        int randomTask = this.notSimon.getRandom().nextInt(4);
 
         if (!(this.taskTimer <= 0) && taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
             this.taskTimer--;
