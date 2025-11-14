@@ -39,6 +39,8 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
                 taskTimerComponent.taskTwoActive = false;
                 taskTimerComponent.taskThreeActive = false;
                 taskTimerComponent.taskFourActive = false;
+                taskTimerComponent.taskFiveActive = false;
+                taskTimerComponent.taskSixActive = false;
                 playerEntity.getStackInHand(hand).decrement(1);
                 playerEntity.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 600);
@@ -57,8 +59,8 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.beginRegistration(PlayerEntity.class, LifeTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(LifeTimerComponent::new);
-		registry.beginRegistration(PlayerEntity.class, TimeBetweenTasksComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(TimeBetweenTasksComponent::new);
-		registry.beginRegistration(PlayerEntity.class, TaskTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(TaskTimerComponent::new);
+        registry.beginRegistration(PlayerEntity.class, LifeTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(LifeTimerComponent::new);
+		registry.beginRegistration(PlayerEntity.class, TimeBetweenTasksComponent.KEY).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(TimeBetweenTasksComponent::new);
+		registry.beginRegistration(PlayerEntity.class, TaskTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(TaskTimerComponent::new);
     }
 }
