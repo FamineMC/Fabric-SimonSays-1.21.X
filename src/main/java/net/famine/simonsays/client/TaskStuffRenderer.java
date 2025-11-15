@@ -6,6 +6,7 @@ import net.famine.simonsays.component.TaskTimerComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -33,7 +34,7 @@ public class TaskStuffRenderer {
         long taskTimerMinutes = taskTimerSeconds / 60;
         long remainingTaskTimerSeconds = taskTimerSeconds % 60;
         var taskTimer = Text.literal("Time Left To Complete Task: ").append(String.format("%d:%02d", taskTimerMinutes, remainingTaskTimerSeconds));
-        var currentTask = Text.literal(String.valueOf(taskTimerComponent.randomTask));
+        var currentTask = taskTimerComponent.getTaskTextFromNumber(taskTimerComponent.randomTask);
         var renderer = MinecraftClient.getInstance().textRenderer;
         var halfOfLifeText = (MinecraftClient.getInstance().textRenderer.getWidth(lifeTimer) / 2);
         var halfOfTaskText = (MinecraftClient.getInstance().textRenderer.getWidth(taskTimer) / 2);

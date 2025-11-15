@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.famine.simonsays.component.LifeTimerComponent;
 import net.famine.simonsays.component.TaskTimerComponent;
+import net.famine.simonsays.network.KeybindFailTaskPayload;
 import net.famine.simonsays.network.KeybindTaskPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -22,9 +23,13 @@ public class SimonSaysClient implements ClientModInitializer {
             var player = client.player;
             if (player == null) return;
             TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
-            if (taskTimerComponent.randomKeybind != null) {
+            if (taskTimerComponent.taskCurrentlyActive) {
                 if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), taskTimerComponent.randomKeybind)) {
-                    ClientPlayNetworking.send(new KeybindTaskPayload());
+                    if (taskTimerComponent.taskFiveActive) {
+                        ClientPlayNetworking.send(new KeybindTaskPayload());
+                    } else if (taskTimerComponent.taskSixActive) {
+                        ClientPlayNetworking.send(new KeybindFailTaskPayload());
+                    }
                 }
             }
         });

@@ -17,7 +17,7 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     private final PlayerEntity notSimon;
 
-    public int bufferTimer = 0;
+    public int bufferTimer = -1;
 
     public int min = 400;
     public int max = 800;
@@ -59,10 +59,8 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
             //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 
-            if (timerComponent.hasStartedTimer){
 
-                taskHasBeenAssigned = true;
-            }
+            taskHasBeenAssigned = true;
 
         }
 
@@ -72,10 +70,12 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.bufferTimer = nbtCompound.getInt("timebetweentaskscount");
+        this.assignedTaskTime = nbtCompound.getInt("assignedTaskTime");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         nbtCompound.putInt("timebetweentaskscount", this.bufferTimer);
+        nbtCompound.putInt("assignedTaskTime", this.assignedTaskTime);
     }
 }

@@ -11,9 +11,12 @@ import net.famine.simonsays.command.LifeTimerStartCommand;
 import net.famine.simonsays.component.LifeTimerComponent;
 import net.famine.simonsays.component.TaskTimerComponent;
 import net.famine.simonsays.component.TimeBetweenTasksComponent;
+import net.famine.simonsays.network.KeybindFailTaskPayload;
 import net.famine.simonsays.network.KeybindTaskPayload;
+import net.famine.simonsays.sound.SimonSounds;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
@@ -47,6 +50,7 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
                 taskTimerComponent.taskFourActive = false;
                 taskTimerComponent.taskFiveActive = false;
                 taskTimerComponent.taskSixActive = false;
+                taskTimerComponent.randomTask = 0;
                 playerEntity.getStackInHand(hand).decrement(1);
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 600);
                 long addSeconds = 600 / 20;
@@ -54,11 +58,15 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
                 long remainingAddSeconds = addSeconds % 60;
                 playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
                         .append(Text.literal(" added to your life!")), true);
+                playerEntity.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
             }
             return TypedActionResult.pass(stack);
         });
         PayloadTypeRegistry.playC2S().register(KeybindTaskPayload.ID, KeybindTaskPayload.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(KeybindTaskPayload.ID, new KeybindTaskPayload.Receiver());
+        PayloadTypeRegistry.playC2S().register(KeybindFailTaskPayload.ID, KeybindFailTaskPayload.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(KeybindFailTaskPayload.ID, new KeybindFailTaskPayload.Receiver());
+        SimonSounds.registerSounds();
 	}
 
 	public static @NotNull Identifier id(String name) {

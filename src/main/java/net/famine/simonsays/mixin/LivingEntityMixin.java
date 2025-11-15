@@ -3,6 +3,7 @@ package net.famine.simonsays.mixin;
 
 import net.famine.simonsays.component.LifeTimerComponent;
 import net.famine.simonsays.component.TaskTimerComponent;
+import net.famine.simonsays.sound.SimonSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -11,6 +12,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,14 +39,15 @@ public class LivingEntityMixin {
                 taskTimerComponent.taskFourActive = false;
                 taskTimerComponent.taskFiveActive = false;
                 taskTimerComponent.taskSixActive = false;
+                taskTimerComponent.randomTask = 0;
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 700);
                 long addSeconds = 700 / 20;
                 long addMinutes = addSeconds / 60;
                 long remainingAddSeconds = addSeconds % 60;
                 playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
                         .append(Text.literal(" added to your life!")), true);
-                playerEntity.sendMessage(Text.literal("Task Complete!"));
                 playerEntity.clearStatusEffects();
+                playerEntity.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
             }
             if(!effect.equals(potionEffectTaskEffect.get(taskTimerComponent.randomStatus)) && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskFourActive){
                 taskTimerComponent.taskCurrentlyActive = false;
@@ -54,6 +57,7 @@ public class LivingEntityMixin {
                 taskTimerComponent.taskFourActive = false;
                 taskTimerComponent.taskFiveActive = false;
                 taskTimerComponent.taskSixActive = false;
+                taskTimerComponent.randomTask = 0;
                 lifeTimerComponent.subtractFromSyncedLifeTimer(playerEntity, 900);
 
                 long subtractSeconds = 900 / 20;
@@ -61,6 +65,7 @@ public class LivingEntityMixin {
                 long remainingSubtractSeconds = subtractSeconds % 60;
                 playerEntity.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
                         .append(Text.literal(" removed from your life. Do better next time.")), true);
+                playerEntity.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
                 playerEntity.clearStatusEffects();
             }
         }
