@@ -39,6 +39,7 @@ public class LivingEntityMixin {
                 lifeTimerComponent.addToSyncedLifeTimer(player, 300);
                 player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
                 player.sendMessage(Text.literal("Task Complete!"));
+                player.clearStatusEffects();
             }
         }
 
