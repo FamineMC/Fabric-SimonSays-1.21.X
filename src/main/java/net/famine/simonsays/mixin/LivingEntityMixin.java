@@ -25,9 +25,9 @@ public class LivingEntityMixin {
     @Inject(at = @At("TAIL"), method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z", cancellable = true)
     void init(StatusEffectInstance effect, Entity source, CallbackInfoReturnable<Boolean> cir){
         LivingEntity living = (LivingEntity)(Object) this;
-        if(living instanceof PlayerEntity player){
-            LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(player);
-            TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
+        if(living instanceof PlayerEntity playerEntity){
+            LifeTimerComponent lifeTimerComponent = LifeTimerComponent.KEY.get(playerEntity);
+            TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(playerEntity);
 
             if(effect.equals(potionEffectTaskEffect.get(taskTimerComponent.randomStatus)) && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskFourActive){
                 taskTimerComponent.taskCurrentlyActive = false;
@@ -35,11 +35,16 @@ public class LivingEntityMixin {
                 taskTimerComponent.taskTwoActive = false;
                 taskTimerComponent.taskThreeActive = false;
                 taskTimerComponent.taskFourActive = false;
-                player.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
-                lifeTimerComponent.addToSyncedLifeTimer(player, 300);
-                player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
-                player.sendMessage(Text.literal("Task Complete!"));
-                player.clearStatusEffects();
+                taskTimerComponent.taskFiveActive = false;
+                taskTimerComponent.taskSixActive = false;
+                lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 300);
+                long addSeconds = 300 / 20;
+                long addMinutes = addSeconds / 60;
+                long remainingAddSeconds = addSeconds % 60;
+                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
+                        .append(Text.literal(" added to your life!")), true);
+                playerEntity.sendMessage(Text.literal("Task Complete!"));
+                playerEntity.clearStatusEffects();
             }
         }
 

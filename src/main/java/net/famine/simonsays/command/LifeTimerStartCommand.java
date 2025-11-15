@@ -15,14 +15,15 @@ import net.minecraft.text.Text;
 public class LifeTimerStartCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("Saw").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(4))
-                .then(CommandManager.argument("amount", IntegerArgumentType.integer(1, 24000))
+                .then(CommandManager.argument("amountInMinutes", IntegerArgumentType.integer(1, 60))
                         .then(CommandManager.argument("commandUserExcluded", BoolArgumentType.bool())
                                 .executes(commandContext -> {
                                 ServerCommandSource source = commandContext.getSource();
                                 MinecraftServer server = source.getServer();
                                 Entity entity = source.getEntity();
                                 boolean excluded = BoolArgumentType.getBool(commandContext, "commandUserExcluded");
-                                int lifetimer = IntegerArgumentType.getInteger(commandContext, "amount");
+                                int minuteAmount = IntegerArgumentType.getInteger(commandContext, "amountInMinutes");
+                                int lifetimer = (IntegerArgumentType.getInteger(commandContext, "amountInMinutes") * 60 * 20);
                                 if (excluded) {
                                     for (var players : server.getPlayerManager().getPlayerList()) {
                                         if (players != entity) {
@@ -34,7 +35,9 @@ public class LifeTimerStartCommand {
                                         }
                                     }
                                     if (entity != null) {
-                                        entity.sendMessage(Text.literal("Set global life timer to " + lifetimer + " without including self"));
+                                        entity.sendMessage(Text.literal("Set global life timer to ")
+                                                .append(String.format("%d", minuteAmount))
+                                                .append(Text.literal(" minutes (excluding self)!")));
                                     }
                                 } else {
                                     for (var players : server.getPlayerManager().getPlayerList()){
@@ -45,7 +48,9 @@ public class LifeTimerStartCommand {
                                         betweenTasksComponent.taskHasBeenAssigned = false;
                                     }
                                     if (entity != null) {
-                                        entity.sendMessage(Text.literal("Set global life timer to " + lifetimer));
+                                        entity.sendMessage(Text.literal("Set global life timer to ")
+                                                .append(String.format("%d", minuteAmount))
+                                                .append(Text.literal(" minutes!")));
                                     }
                                 }
                                 return 0;

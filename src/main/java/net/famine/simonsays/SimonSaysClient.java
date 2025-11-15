@@ -23,7 +23,9 @@ public class SimonSaysClient implements ClientModInitializer {
             if (player == null) return;
             TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
             if (taskTimerComponent.randomKeybind != null) {
-                ClientPlayNetworking.send(new KeybindTaskPayload(InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), taskTimerComponent.randomKeybind)));
+                if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), taskTimerComponent.randomKeybind)) {
+                    ClientPlayNetworking.send(new KeybindTaskPayload());
+                }
             }
         });
     }

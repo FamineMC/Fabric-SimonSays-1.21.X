@@ -21,6 +21,8 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     public int lifeTimer = 0;
 
+    public boolean hasStartedTimer = false;
+
     public LifeTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
     }
@@ -36,7 +38,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public void sync() {
         KEY.sync(this.notSimon);
     }
-    public boolean hasStartedTimer = false;
+
 
     @Override
     public void tick() {
@@ -45,7 +47,10 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
         if (!(this.lifeTimer <= 0)){
             this.lifeTimer--;
             sync();
-            notSimon.sendMessage(Text.literal("" + this.lifeTimer), true);
+            if (this.notSimon.isDead()) {
+                this.lifeTimer = getLifeTimer();
+                sync();
+            }
         }
         if (this.lifeTimer == 0 && hasStartedTimer){
             notSimon.kill();
@@ -56,7 +61,6 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
             if (notSimon instanceof ServerPlayerEntity playerEntity){
                 playerEntity.changeGameMode(GameMode.SPECTATOR);
             }
-
         }
     }
 
@@ -83,10 +87,12 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.lifeTimer = nbtCompound.getInt("lifetimercount");
+        this.hasStartedTimer = nbtCompound.getBoolean("hasStartedTimer");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         nbtCompound.putInt("lifetimercount", this.lifeTimer);
+        nbtCompound.putBoolean("hasStartedTimer", this.hasStartedTimer);
     }
 }

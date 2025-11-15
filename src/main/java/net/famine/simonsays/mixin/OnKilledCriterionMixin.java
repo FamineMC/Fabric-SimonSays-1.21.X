@@ -26,10 +26,14 @@ public class OnKilledCriterionMixin {
             taskTimerComponent.taskTwoActive = false;
             taskTimerComponent.taskThreeActive = false;
             taskTimerComponent.taskFourActive = false;
-            player.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
+            taskTimerComponent.taskFiveActive = false;
+            taskTimerComponent.taskSixActive = false;
             lifeTimerComponent.addToSyncedLifeTimer(player, 300);
-            player.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
-            player.sendMessage(Text.literal("Task Complete!"));
+            long addSeconds = 300 / 20;
+            long addMinutes = addSeconds / 60;
+            long remainingAddSeconds = addSeconds % 60;
+            player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
+                    .append(Text.literal(" added to your life!")), true);
 
         }
     }

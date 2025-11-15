@@ -48,12 +48,12 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
                 taskTimerComponent.taskFiveActive = false;
                 taskTimerComponent.taskSixActive = false;
                 playerEntity.getStackInHand(hand).decrement(1);
-                playerEntity.sendMessage(Text.literal("previous time: " + lifeTimerComponent.lifeTimer));
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 600);
-                playerEntity.sendMessage(Text.literal("current time: " + lifeTimerComponent.lifeTimer));
-                playerEntity.sendMessage(Text.literal("Task Complete!"));
-
-
+                long addSeconds = 600 / 20;
+                long addMinutes = addSeconds / 60;
+                long remainingAddSeconds = addSeconds % 60;
+                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
+                        .append(Text.literal(" added to your life!")), true);
             }
             return TypedActionResult.pass(stack);
         });
