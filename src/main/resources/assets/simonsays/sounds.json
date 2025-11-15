@@ -42,7 +42,7 @@
   "jumpscare_sound": {
     "subtitle": "subtitles.simonsays.jumpscare_sound",
     "sounds": [
-      "simonsays:jumpscare_sound"
+      "simonsay:jumpscare_sound"
     ]
   }
 
