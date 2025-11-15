@@ -17,32 +17,32 @@
   "horror_ambient": {
     "subtitle": "subtitles.simonsays.horror_ambient",
     "sounds": [
-      "simonsay:horror_ambient_1",
-      "simonsay:horror_ambient_2"
+      "simonsays:horror_ambient_1",
+      "simonsays:horror_ambient_2"
     ]
   },
   "task_assign": {
     "subtitle": "subtitles.simonsays.task_assign",
     "sounds": [
-      "simonsay:task_assign"
+      "simonsays:task_assign"
     ]
   },
   "task_complete": {
     "subtitle": "subtitles.simonsays.task_complete",
     "sounds": [
-      "simonsay:task_complete"
+      "simonsays:task_complete"
     ]
   },
   "task_fail": {
     "subtitle": "subtitles.simonsays.task_fail",
     "sounds": [
-      "simonsay:task_fail"
+      "simonsays:task_fail"
     ]
   },
   "jumpscare_sound": {
     "subtitle": "subtitles.simonsays.jumpscare_sound",
     "sounds": [
-      "simonsay:jumpscare_sound"
+      "simonsays:jumpscare_sound"
     ]
   }
 
