@@ -1,0 +1,49 @@
+{
+  "knock_sound": {
+    "subtitle": "subtitles.simonsays.knock_sound",
+    "sounds": [
+      "simonsays:knock_1",
+      "simonsays:knock_2",
+      "simonsays:knock_3",
+      "simonsays:knock_4"
+    ]
+  },
+  "heartbeat_ambient": {
+    "subtitle": "subtitles.simonsays.heartbeat_ambient",
+    "sounds": [
+      "simonsay:heartbeat_ambient"
+    ]
+  },
+  "horror_ambient": {
+    "subtitle": "subtitles.simonsays.horror_ambient",
+    "sounds": [
+      "simonsay:horror_ambient_1",
+      "simonsay:horror_ambient_2"
+    ]
+  },
+  "task_assign": {
+    "subtitle": "subtitles.simonsays.task_assign",
+    "sounds": [
+      "simonsay:task_assign"
+    ]
+  },
+  "task_complete": {
+    "subtitle": "subtitles.simonsays.task_complete",
+    "sounds": [
+      "simonsay:task_complete"
+    ]
+  },
+  "task_fail": {
+    "subtitle": "subtitles.simonsays.task_fail",
+    "sounds": [
+      "simonsay:task_fail"
+    ]
+  },
+  "jumpscare_sound": {
+    "subtitle": "subtitles.simonsays.jumpscare_sound",
+    "sounds": [
+      "simonsay:jumpscare_sound"
+    ]
+  }
+
+}
