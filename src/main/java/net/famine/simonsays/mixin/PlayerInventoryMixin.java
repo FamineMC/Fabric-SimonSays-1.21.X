@@ -29,8 +29,8 @@ public class PlayerInventoryMixin {
             taskTimerComponent.taskFourActive = false;
             taskTimerComponent.taskFiveActive = false;
             taskTimerComponent.taskSixActive = false;
-            lifeTimerComponent.addToSyncedLifeTimer(player, 300);
-            long addSeconds = 300 / 20;
+            lifeTimerComponent.addToSyncedLifeTimer(player, 400);
+            long addSeconds = 400 / 20;
             long addMinutes = addSeconds / 60;
             long remainingAddSeconds = addSeconds % 60;
             player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))

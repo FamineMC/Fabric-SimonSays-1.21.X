@@ -52,7 +52,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 sync();
             }
         }
-        if (this.lifeTimer == 0 && hasStartedTimer){
+        if (this.lifeTimer <= 0 && hasStartedTimer){
             notSimon.kill();
             hasStartedTimer = false;
             sync();

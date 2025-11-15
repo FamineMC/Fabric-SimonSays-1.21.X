@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.famine.simonsays.component.LifeTimerComponent;
+import net.famine.simonsays.component.TaskTimerComponent;
 import net.famine.simonsays.component.TimeBetweenTasksComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.codec.PacketCodec;
@@ -11,6 +12,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+
+import java.util.Random;
 
 public class LifeTimerStartCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -29,9 +32,17 @@ public class LifeTimerStartCommand {
                                         if (players != entity) {
                                             LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
                                             TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(players);
+                                            TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(players);
                                             timerComponent.setLifeTimer(lifetimer);
-                                            timerComponent.hasStartedTimer = true;
                                             betweenTasksComponent.taskHasBeenAssigned = false;
+                                            taskTimerComponent.taskCurrentlyActive = false;
+                                            taskTimerComponent.taskTimer = 0;
+                                            betweenTasksComponent.bufferTimer = 0;
+                                            Random random = new Random();
+                                            int r = random.nextInt(betweenTasksComponent.min, betweenTasksComponent.max);
+                                            betweenTasksComponent.setBufferTimer(r);
+                                            timerComponent.hasStartedTimer = true;
+
                                         }
                                     }
                                     if (entity != null) {
@@ -43,9 +54,18 @@ public class LifeTimerStartCommand {
                                     for (var players : server.getPlayerManager().getPlayerList()){
                                         LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(players);
                                         TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(players);
+                                        TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(players);
                                         timerComponent.setLifeTimer(lifetimer);
-                                        timerComponent.hasStartedTimer = true;
                                         betweenTasksComponent.taskHasBeenAssigned = false;
+                                        taskTimerComponent.taskCurrentlyActive = false;
+                                        taskTimerComponent.taskTimer = 0;
+                                        betweenTasksComponent.bufferTimer = 0;
+                                        Random random = new Random();
+                                        int r = random.nextInt(betweenTasksComponent.min, betweenTasksComponent.max);
+                                        betweenTasksComponent.setBufferTimer(r);
+
+                                        timerComponent.hasStartedTimer = true;
+
                                     }
                                     if (entity != null) {
                                         entity.sendMessage(Text.literal("Set global life timer to ")

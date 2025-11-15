@@ -37,13 +37,30 @@ public class LivingEntityMixin {
                 taskTimerComponent.taskFourActive = false;
                 taskTimerComponent.taskFiveActive = false;
                 taskTimerComponent.taskSixActive = false;
-                lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 300);
-                long addSeconds = 300 / 20;
+                lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 700);
+                long addSeconds = 700 / 20;
                 long addMinutes = addSeconds / 60;
                 long remainingAddSeconds = addSeconds % 60;
                 playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
                         .append(Text.literal(" added to your life!")), true);
                 playerEntity.sendMessage(Text.literal("Task Complete!"));
+                playerEntity.clearStatusEffects();
+            }
+            if(!effect.equals(potionEffectTaskEffect.get(taskTimerComponent.randomStatus)) && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskFourActive){
+                taskTimerComponent.taskCurrentlyActive = false;
+                taskTimerComponent.taskOneActive = false;
+                taskTimerComponent.taskTwoActive = false;
+                taskTimerComponent.taskThreeActive = false;
+                taskTimerComponent.taskFourActive = false;
+                taskTimerComponent.taskFiveActive = false;
+                taskTimerComponent.taskSixActive = false;
+                lifeTimerComponent.subtractFromSyncedLifeTimer(playerEntity, 900);
+
+                long subtractSeconds = 900 / 20;
+                long subtractMinutes = subtractSeconds / 60;
+                long remainingSubtractSeconds = subtractSeconds % 60;
+                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
+                        .append(Text.literal(" removed from your life. Do better next time.")), true);
                 playerEntity.clearStatusEffects();
             }
         }
