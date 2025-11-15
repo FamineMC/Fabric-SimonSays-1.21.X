@@ -11,7 +11,7 @@
   "heartbeat_ambient": {
     "subtitle": "subtitles.simonsays.heartbeat_ambient",
     "sounds": [
-      "simonsay:heartbeat_ambient"
+      "simonsays:heartbeat_ambient"
     ]
   },
   "horror_ambient": {
