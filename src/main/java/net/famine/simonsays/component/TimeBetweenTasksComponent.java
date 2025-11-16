@@ -19,8 +19,8 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     public int bufferTimer = 0;
 
-    public int min = 400;
-    public int max = 800;
+    public int min = 300;
+    public int max = 600;
 
     public int assignedTaskTime;
 
