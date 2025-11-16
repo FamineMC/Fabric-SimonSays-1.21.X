@@ -38,18 +38,33 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     public boolean taskHasBeenAssigned = false;
 
+    public void setTaskHasBeenAssigned(boolean taskHasBeenAssigned) {
+        this.taskHasBeenAssigned = taskHasBeenAssigned;
+        sync();
+    }
 
+    public void setAssignedTaskTime(int assignedTaskTime) {
+        this.assignedTaskTime = assignedTaskTime;
+        sync();
+    }
+
+    public void sync() {
+        KEY.sync(this.notSimon);
+    }
 
     @Override
     public void tick() {
         LifeTimerComponent timerComponent = LifeTimerComponent.KEY.get(notSimon);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
-        if (!taskTimerComponent.taskCurrentlyActive && timerComponent.hasStartedTimer && !(this.bufferTimer <= 0)){
-            this.bufferTimer--;
-            notSimon.sendMessage(Text.literal("buffer timer: " + this.bufferTimer), true);
+        if (timerComponent.hasStartedTimer && this.bufferTimer > 0) {
+            if (!taskTimerComponent.taskCurrentlyActive){
+                this.bufferTimer--;
+                notSimon.sendMessage(Text.literal("buffer timer: " + this.bufferTimer), true);
 
+            } else {
+                this.bufferTimer = getBufferTimer();
+            }
         }
-
 
         if (this.bufferTimer == 0){
             Random random = new Random();
@@ -61,6 +76,7 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
             if(timerComponent.hasStartedTimer){
                 taskHasBeenAssigned = true;
+                sync();
             }
 
 

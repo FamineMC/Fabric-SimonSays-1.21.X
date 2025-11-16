@@ -23,14 +23,14 @@ public class OnKilledCriterionMixin {
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
 
         if(entity.getType() == taskTimerComponent.randomEntity && killingDamage.isDirect() && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskThreeActive){
-            taskTimerComponent.taskCurrentlyActive = false;
-            taskTimerComponent.taskOneActive = false;
-            taskTimerComponent.taskTwoActive = false;
-            taskTimerComponent.taskThreeActive = false;
-            taskTimerComponent.taskFourActive = false;
-            taskTimerComponent.taskFiveActive = false;
-            taskTimerComponent.taskSixActive = false;
-            taskTimerComponent.randomTask = 0;
+            taskTimerComponent.setTaskCurrentlyActive(false);
+            taskTimerComponent.setTaskOneActive(false);
+            taskTimerComponent.setTaskTwoActive(false);
+            taskTimerComponent.setTaskThreeActive(false);
+            taskTimerComponent.setTaskFourActive(false);
+            taskTimerComponent.setTaskFiveActive(false);
+            taskTimerComponent.setTaskSixActive(false);
+            taskTimerComponent.setRandomTask(0);
             lifeTimerComponent.addToSyncedLifeTimer(player, 400);
             long addSeconds = 400 / 20;
             long addMinutes = addSeconds / 60;

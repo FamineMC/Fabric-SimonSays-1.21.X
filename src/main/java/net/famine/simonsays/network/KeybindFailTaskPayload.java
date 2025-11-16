@@ -30,14 +30,14 @@ public record KeybindFailTaskPayload() implements CustomPayload {
             TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(player);
             if (taskTimerComponent.taskCurrentlyActive) {
                 if (taskTimerComponent.taskSixActive) {
-                    taskTimerComponent.taskCurrentlyActive = false;
-                    taskTimerComponent.taskOneActive = false;
-                    taskTimerComponent.taskTwoActive = false;
-                    taskTimerComponent.taskThreeActive = false;
-                    taskTimerComponent.taskFourActive = false;
-                    taskTimerComponent.taskFiveActive = false;
-                    taskTimerComponent.taskSixActive = false;
-                    taskTimerComponent.randomTask = 0;
+                    taskTimerComponent.setTaskCurrentlyActive(false);
+                    taskTimerComponent.setTaskOneActive(false);
+                    taskTimerComponent.setTaskTwoActive(false);
+                    taskTimerComponent.setTaskThreeActive(false);
+                    taskTimerComponent.setTaskFourActive(false);
+                    taskTimerComponent.setTaskFiveActive(false);
+                    taskTimerComponent.setTaskSixActive(false);
+                    taskTimerComponent.setRandomTask(0);
                     lifeTimerComponent.subtractFromSyncedLifeTimer(player, 1200);
                     long subtractSeconds = 1200 / 20;
                     long subtractMinutes = subtractSeconds / 60;
