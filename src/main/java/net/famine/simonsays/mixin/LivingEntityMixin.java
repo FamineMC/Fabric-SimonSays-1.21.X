@@ -40,6 +40,7 @@ public class LivingEntityMixin {
                 taskTimerComponent.setTaskFiveActive(false);
                 taskTimerComponent.setTaskSixActive(false);
                 taskTimerComponent.setRandomTask(0);
+                taskTimerComponent.taskTimer = 100;
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 700);
                 long addSeconds = 700 / 20;
                 long addMinutes = addSeconds / 60;
@@ -48,6 +49,7 @@ public class LivingEntityMixin {
                         .append(Text.literal(" added to your life!")), true);
                 playerEntity.clearStatusEffects();
                 playerEntity.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
+                taskTimerComponent.sync();
             }
             if(!effect.equals(potionEffectTaskEffect.get(taskTimerComponent.randomStatus)) && taskTimerComponent.taskCurrentlyActive && taskTimerComponent.taskFourActive){
                 taskTimerComponent.setTaskCurrentlyActive(false);
@@ -58,6 +60,7 @@ public class LivingEntityMixin {
                 taskTimerComponent.setTaskFiveActive(false);
                 taskTimerComponent.setTaskSixActive(false);
                 taskTimerComponent.setRandomTask(0);
+                taskTimerComponent.taskTimer = 100;
                 lifeTimerComponent.subtractFromSyncedLifeTimer(playerEntity, 900);
 
                 long subtractSeconds = 900 / 20;
@@ -67,6 +70,7 @@ public class LivingEntityMixin {
                         .append(Text.literal(" removed from your life. Do better next time.")), true);
                 playerEntity.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
                 playerEntity.clearStatusEffects();
+                taskTimerComponent.sync();
             }
         }
 

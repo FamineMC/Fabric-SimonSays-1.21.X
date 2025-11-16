@@ -32,6 +32,7 @@ public class PlayerInventoryMixin {
             taskTimerComponent.setTaskFiveActive(false);
             taskTimerComponent.setTaskSixActive(false);
             taskTimerComponent.setRandomTask(0);
+            taskTimerComponent.taskTimer = 100;
             lifeTimerComponent.addToSyncedLifeTimer(player, 400);
             long addSeconds = 400 / 20;
             long addMinutes = addSeconds / 60;
@@ -39,6 +40,7 @@ public class PlayerInventoryMixin {
             player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
                     .append(Text.literal(" added to your life!")), true);
             player.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
+            taskTimerComponent.sync();
 
         }
     }

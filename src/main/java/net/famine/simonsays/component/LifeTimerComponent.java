@@ -1,11 +1,13 @@
 package net.famine.simonsays.component;
 
 import net.famine.simonsays.SimonSays;
+import net.famine.simonsays.sound.SimonSounds;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -20,6 +22,8 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
     private final PlayerEntity notSimon;
 
     public int lifeTimer = 0;
+    public int deathTimer = 200;
+    public boolean youreDead = false;
 
     public boolean hasStartedTimer = false;
 
@@ -33,6 +37,10 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     public void setLifeTimer(int lifeTimer) {
         this.lifeTimer = lifeTimer;
+    }
+
+    public void setDeathTimer(int deathTimer){
+        this.deathTimer = deathTimer;
     }
 
     public void sync() {
@@ -53,13 +61,26 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
             }
         }
         if (this.lifeTimer <= 0 && hasStartedTimer){
-            notSimon.kill();
+            youreDead = true;
             hasStartedTimer = false;
-            sync();
             betweenTasksComponent.setBufferTimer(0);
             taskTimerComponent.setTaskTimer(0);
-            if (notSimon instanceof ServerPlayerEntity playerEntity){
-                playerEntity.changeGameMode(GameMode.SPECTATOR);
+            this.sync();
+        }
+        if (youreDead){
+            deathTimer--;
+            this.sync();
+            if(deathTimer <= 0){
+                youreDead = false;
+                this.sync();
+                if(!notSimon.getWorld().isClient()){
+                    notSimon.playSoundToPlayer(SimonSounds.JUMPSCARE_SOUND, SoundCategory.PLAYERS, 1f, 1f);
+                    notSimon.kill();
+                    if (notSimon instanceof ServerPlayerEntity playerEntity){
+                        playerEntity.changeGameMode(GameMode.SPECTATOR);
+                    }
+                }
+
             }
         }
     }
@@ -87,12 +108,14 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.lifeTimer = nbtCompound.getInt("lifetimercount");
+        this.deathTimer = nbtCompound.getInt("deathtimercount");
         this.hasStartedTimer = nbtCompound.getBoolean("hasStartedTimer");
     }
 
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         nbtCompound.putInt("lifetimercount", this.lifeTimer);
+        nbtCompound.putInt("deathtimercount", this.deathTimer);
         nbtCompound.putBoolean("hasStartedTimer", this.hasStartedTimer);
     }
 }

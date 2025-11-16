@@ -36,12 +36,16 @@ public class LifeTimerStartCommand {
                                             timerComponent.setLifeTimer(lifetimer);
                                             betweenTasksComponent.taskHasBeenAssigned = false;
                                             taskTimerComponent.taskCurrentlyActive = false;
-                                            taskTimerComponent.taskTimer = 0;
+                                            taskTimerComponent.taskTimer = 100;
                                             betweenTasksComponent.bufferTimer = 0;
+                                            timerComponent.setDeathTimer(200);
                                             Random random = new Random();
                                             int r = random.nextInt(betweenTasksComponent.min, betweenTasksComponent.max);
                                             betweenTasksComponent.setBufferTimer(r);
                                             timerComponent.hasStartedTimer = true;
+                                            timerComponent.sync();
+                                            taskTimerComponent.sync();
+                                            betweenTasksComponent.sync();
 
                                         }
                                     }
@@ -58,13 +62,16 @@ public class LifeTimerStartCommand {
                                         timerComponent.setLifeTimer(lifetimer);
                                         betweenTasksComponent.taskHasBeenAssigned = false;
                                         taskTimerComponent.taskCurrentlyActive = false;
-                                        taskTimerComponent.taskTimer = 0;
+                                        taskTimerComponent.taskTimer = 100;
                                         betweenTasksComponent.bufferTimer = 0;
+                                        timerComponent.setDeathTimer(200);
                                         Random random = new Random();
                                         int r = random.nextInt(betweenTasksComponent.min, betweenTasksComponent.max);
                                         betweenTasksComponent.setBufferTimer(r);
-
                                         timerComponent.hasStartedTimer = true;
+                                        timerComponent.sync();
+                                        taskTimerComponent.sync();
+                                        betweenTasksComponent.sync();
 
                                     }
                                     if (entity != null) {

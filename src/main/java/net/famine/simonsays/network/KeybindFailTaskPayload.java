@@ -38,6 +38,7 @@ public record KeybindFailTaskPayload() implements CustomPayload {
                     taskTimerComponent.setTaskFiveActive(false);
                     taskTimerComponent.setTaskSixActive(false);
                     taskTimerComponent.setRandomTask(0);
+                    taskTimerComponent.taskTimer = 100;
                     lifeTimerComponent.subtractFromSyncedLifeTimer(player, 1200);
                     long subtractSeconds = 1200 / 20;
                     long subtractMinutes = subtractSeconds / 60;
@@ -45,6 +46,7 @@ public record KeybindFailTaskPayload() implements CustomPayload {
                     player.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
                             .append(Text.literal(" removed from your life. Do better next time.")), true);
                     player.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
+                    taskTimerComponent.sync();
                 }
             }
         }

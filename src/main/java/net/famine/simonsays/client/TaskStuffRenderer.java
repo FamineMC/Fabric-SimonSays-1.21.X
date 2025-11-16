@@ -29,11 +29,11 @@ public class TaskStuffRenderer {
         long lifeTimerSeconds = lifeTimerComponent.lifeTimer / 20;
         long lifeTimerMinutes = lifeTimerSeconds / 60;
         long remainingLifeTimerSeconds = lifeTimerSeconds % 60;
-        var lifeTimer = Text.literal("Time Left To Live: ").append(String.format("%d:%02d", lifeTimerMinutes, remainingLifeTimerSeconds));
+        var lifeTimer = Text.literal(String.format("%d:%02d", lifeTimerMinutes, remainingLifeTimerSeconds));
         long taskTimerSeconds = taskTimerComponent.taskTimer / 20;
         long taskTimerMinutes = taskTimerSeconds / 60;
         long remainingTaskTimerSeconds = taskTimerSeconds % 60;
-        var taskTimer = Text.literal("Time Left To Complete Task: ").append(String.format("%d:%02d", taskTimerMinutes, remainingTaskTimerSeconds));
+        var taskTimer = Text.literal(String.format("%d:%02d", taskTimerMinutes, remainingTaskTimerSeconds));
         var currentTask = taskTimerComponent.getTaskTextFromNumber(taskTimerComponent.randomTask);
         var renderer = MinecraftClient.getInstance().textRenderer;
         var halfOfLifeText = (MinecraftClient.getInstance().textRenderer.getWidth(lifeTimer) / 2);
@@ -46,8 +46,8 @@ public class TaskStuffRenderer {
         if (lifeTimerComponent.lifeTimer > 0) {
             RenderSystem.enableBlend();
             context.drawTextWithShadow(renderer, lifeTimer, textX, y + 14 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.GREEN);
-            context.drawTextWithShadow(renderer, taskTimer, textX2, y + 46 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.WHITE);
-            context.drawTextWithShadow(renderer, currentTask, textX3, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.RED);
+            context.drawTextWithShadow(renderer, taskTimer, textX2, y + 46 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
+            context.drawTextWithShadow(renderer, currentTask, textX3, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.WHITE);
             RenderSystem.disableBlend();
         }
     }

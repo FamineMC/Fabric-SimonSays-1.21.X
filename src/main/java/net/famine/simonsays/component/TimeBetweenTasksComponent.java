@@ -19,8 +19,8 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     public int bufferTimer = 0;
 
-    public int min = 50;
-    public int max = 101;
+    public int min = 400;
+    public int max = 800;
 
     public int assignedTaskTime;
 
@@ -59,7 +59,7 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
         if (timerComponent.hasStartedTimer && this.bufferTimer > 0) {
             if (!taskTimerComponent.taskCurrentlyActive){
                 this.bufferTimer--;
-                notSimon.sendMessage(Text.literal("buffer timer: " + this.bufferTimer), true);
+                //notSimon.sendMessage(Text.literal("buffer timer: " + this.bufferTimer), true);
 
             } else {
                 this.bufferTimer = getBufferTimer();
@@ -75,8 +75,11 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
             //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 
             if(timerComponent.hasStartedTimer){
-                taskHasBeenAssigned = true;
-                sync();
+                if(!notSimon.getWorld().isClient()){
+                    taskHasBeenAssigned = true;
+                    sync();
+                }
+
             }
 
 
