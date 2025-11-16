@@ -42,7 +42,6 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     @Override
     public void tick() {
-        TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
         if (!(this.lifeTimer <= 0)){
             this.lifeTimer--;
@@ -56,7 +55,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
             notSimon.kill();
             hasStartedTimer = false;
             sync();
-            betweenTasksComponent.setBufferTimer(0);
+            taskTimerComponent.setBufferTimer(0);
             taskTimerComponent.setTaskTimer(0);
             if (notSimon instanceof ServerPlayerEntity playerEntity){
                 playerEntity.changeGameMode(GameMode.SPECTATOR);

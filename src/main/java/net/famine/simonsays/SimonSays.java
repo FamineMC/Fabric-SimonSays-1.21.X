@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.famine.simonsays.command.LifeTimerStartCommand;
 import net.famine.simonsays.component.LifeTimerComponent;
 import net.famine.simonsays.component.TaskTimerComponent;
-import net.famine.simonsays.component.TimeBetweenTasksComponent;
 import net.famine.simonsays.network.KeybindFailTaskPayload;
 import net.famine.simonsays.network.KeybindTaskPayload;
 import net.famine.simonsays.sound.SimonSounds;
@@ -78,7 +77,6 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.beginRegistration(PlayerEntity.class, LifeTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(LifeTimerComponent::new);
-		registry.beginRegistration(PlayerEntity.class, TimeBetweenTasksComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(TimeBetweenTasksComponent::new);
 		registry.beginRegistration(PlayerEntity.class, TaskTimerComponent.KEY).respawnStrategy(RespawnCopyStrategy.CHARACTER).end(TaskTimerComponent::new);
     }
 }
