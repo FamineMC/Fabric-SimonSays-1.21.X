@@ -14,10 +14,15 @@
       "simonsays:heartbeat_ambient"
     ]
   },
-  "horror_ambient": {
+  "horror_ambient_1": {
     "subtitle": "subtitles.simonsays.horror_ambient",
     "sounds": [
-      "simonsays:horror_ambient_1",
+      "simonsays:horror_ambient_1"
+    ]
+  },
+  "horror_ambient_2": {
+    "subtitle": "subtitles.simonsays.horror_ambient",
+    "sounds": [
       "simonsays:horror_ambient_2"
     ]
   },

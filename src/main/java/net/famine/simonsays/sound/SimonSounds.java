@@ -10,10 +10,7 @@ public class SimonSounds {
 
 
     //Knocks
-    public static SoundEvent KNOCK_1 = registerSoundEvent("knock_1");
-    public static SoundEvent KNOCK_2 = registerSoundEvent("knock_2");
-    public static SoundEvent KNOCK_3 = registerSoundEvent("knock_3");
-    public static SoundEvent KNOCK_4 = registerSoundEvent("knock_4");
+    public static SoundEvent KNOCK = registerSoundEvent("knock");
 
 
     //Ambient Sounds

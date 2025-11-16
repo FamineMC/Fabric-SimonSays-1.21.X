@@ -8,6 +8,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -60,7 +62,18 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 sync();
             }
             if (this.notSimon.getRandom().nextInt(200) == 0) {
+                int random = this.notSimon.getRandom().nextBetween(0, 1);
+                if (random == 2) {
+                    this.notSimon.playSoundToPlayer(SimonSounds.HORROR_AMBIENT_1, SoundCategory.PLAYERS, 1f, 1f);
+                } else {
+                    this.notSimon.playSoundToPlayer(SimonSounds.HORROR_AMBIENT_2, SoundCategory.PLAYERS, 1f, 1f);
+                }
+            }
+            if (this.notSimon.getRandom().nextInt(300) == 0 ) {
                 this.notSimon.playSoundToPlayer(SimonSounds.HEARTBEAT_AMBIENT, SoundCategory.PLAYERS, 1f, 1f);
+            }
+            if (this.notSimon.getRandom().nextInt(300) == 0 ) {
+                this.notSimon.playSoundToPlayer(SimonSounds.KNOCK, SoundCategory.PLAYERS, 1f, 1f);
             }
         }
         if (this.lifeTimer <= 0 && hasStartedTimer){
