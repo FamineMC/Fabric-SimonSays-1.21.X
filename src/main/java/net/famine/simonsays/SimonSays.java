@@ -35,7 +35,6 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
 
 	@Override
 	public void onInitialize() {
-        SimonSounds.registerSounds();
         CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
             LifeTimerStartCommand.register(commandDispatcher);
         });
