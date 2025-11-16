@@ -51,6 +51,8 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
                 taskTimerComponent.taskFiveActive = false;
                 taskTimerComponent.taskSixActive = false;
                 taskTimerComponent.randomTask = 0;
+                taskTimerComponent.taskTimer = 100;
+                lifeTimerComponent.sync();
                 playerEntity.getStackInHand(hand).decrement(1);
                 lifeTimerComponent.addToSyncedLifeTimer(playerEntity, 600);
                 long addSeconds = 600 / 20;

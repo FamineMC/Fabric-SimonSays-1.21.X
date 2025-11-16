@@ -40,7 +40,10 @@ public record KeybindTaskPayload() implements CustomPayload {
                     taskTimerComponent.taskFourActive = false;
                     taskTimerComponent.taskFiveActive = false;
                     taskTimerComponent.taskSixActive = false;
+                    taskTimerComponent.randomTask = 0;
+                    taskTimerComponent.taskTimer = 100;
                     lifeTimerComponent.addToSyncedLifeTimer(player, 300);
+                    taskTimerComponent.sync();
                     long addSeconds = 300 / 20;
                     long addMinutes = addSeconds / 60;
                     long remainingAddSeconds = addSeconds % 60;

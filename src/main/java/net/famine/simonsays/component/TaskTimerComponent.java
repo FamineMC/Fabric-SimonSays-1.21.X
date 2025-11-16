@@ -186,6 +186,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
             timeBetweenTasksComponent.taskHasBeenAssigned = false;
             randomTask = this.notSimon.getWorld().getRandom().nextInt(6);
             notSimon.sendMessage(Text.literal("Task Assigned!"));
+            sync();
             notSimon.playSoundToPlayer(SimonSounds.TASK_ASSIGN, SoundCategory.PLAYERS, 1f, 1f);
             switch (randomTask) {
                 case 0 -> {
@@ -207,6 +208,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
                     taskCurrentlyActive = true;
+                    sync();
                 }
                 case 1 -> {
                     Item randomConsume = consumeItemTaskItems.get(notSimon.getRandom().nextInt(consumeItemTaskItems.size()));
@@ -226,6 +228,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
+                    taskCurrentlyActive = true;
+                    sync();
                 }
                 case 2 ->{
                     EntityType<?> randomEntityEntity = killEntityTaskEntity.get(notSimon.getRandom().nextInt(killEntityTaskEntity.size()));
@@ -245,6 +249,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
+                    taskCurrentlyActive = true;
+                    sync();
                 }
                 case 3 ->{
                     Random random = new Random();
@@ -262,6 +268,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = true;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
+                    taskCurrentlyActive = true;
+                    sync();
                 }
                 case 4 ->{
                     this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
@@ -280,6 +288,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = true;
                     this.taskSixActive = false;
+                    taskCurrentlyActive = true;
+                    sync();
                 }
                 case 5 ->{
                     this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
@@ -298,6 +308,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = true;
+                    taskCurrentlyActive = true;
+                    sync();
                 }
             }
             setTaskTimer(timeBetweenTasksComponent.assignedTaskTime);
@@ -309,6 +321,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 if (this.taskSixActive) {
                     this.taskCurrentlyActive = false;
                     this.taskSixActive = false;
+                    sync();
                     lifeTimerComponent.addToSyncedLifeTimer(this.notSimon, 300);
                     long addSeconds = 300 / 20;
                     long addMinutes = addSeconds / 60;
@@ -325,6 +338,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
+                    sync();
                     lifeTimerComponent.subtractFromSyncedLifeTimer(this.notSimon, 1200);
                     long subtractSeconds = 1200 / 20;
                     long subtractMinutes = subtractSeconds / 60;

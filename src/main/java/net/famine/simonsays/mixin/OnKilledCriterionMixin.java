@@ -31,7 +31,9 @@ public class OnKilledCriterionMixin {
             taskTimerComponent.taskFiveActive = false;
             taskTimerComponent.taskSixActive = false;
             taskTimerComponent.randomTask = 0;
+            taskTimerComponent.taskTimer = 100;
             lifeTimerComponent.addToSyncedLifeTimer(player, 400);
+            taskTimerComponent.sync();
             long addSeconds = 400 / 20;
             long addMinutes = addSeconds / 60;
             long remainingAddSeconds = addSeconds % 60;

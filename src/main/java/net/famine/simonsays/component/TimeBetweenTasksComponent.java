@@ -19,8 +19,8 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
 
     public int bufferTimer = -1;
 
-    public int min = 400;
-    public int max = 800;
+    public int min = 50;
+    public int max = 101;
 
     public int assignedTaskTime;
 
@@ -46,22 +46,36 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
         if (!(this.bufferTimer <= 0) && !taskTimerComponent.taskCurrentlyActive && timerComponent.hasStartedTimer){
             this.bufferTimer--;
-            //notSimon.sendMessage(Text.literal("buffer timer: " + this.BufferTimer), true);
+            timerComponent.sync();
+            //notSimon.sendMessage(Text.literal("buffer timer: " + this.bufferTimer), true);
+
+            if (this.bufferTimer <= 0){
+                Random random = new Random();
+                int r = random.nextInt(min, max);
+                setBufferTimer(r);
+                timerComponent.sync();
+
+
+                if (!taskTimerComponent.taskCurrentlyActive){
+                    taskHasBeenAssigned = true;
+                    timerComponent.sync();
+                }
+
+
+
 
         }
 
 
-        if (this.bufferTimer == 0){
-            Random random = new Random();
-            int r = random.nextInt(min, max);
-            setBufferTimer(r);
 
 
-            //notSimon.sendMessage(Text.literal("Buffer Timer Set To: " + r));
 
-
-            taskHasBeenAssigned = true;
-
+        }
+        if (taskHasBeenAssigned){
+            notSimon.sendMessage(Text.literal("Task Given"));
+        }
+        if (taskTimerComponent.taskCurrentlyActive){
+            notSimon.sendMessage(Text.literal("Task Active"), true);
         }
 
 

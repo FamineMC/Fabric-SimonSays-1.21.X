@@ -32,6 +32,8 @@ public class PlayerInventoryMixin {
             taskTimerComponent.taskFiveActive = false;
             taskTimerComponent.taskSixActive = false;
             taskTimerComponent.randomTask = 0;
+            taskTimerComponent.taskTimer = 100;
+            taskTimerComponent.sync();
             lifeTimerComponent.addToSyncedLifeTimer(player, 400);
             long addSeconds = 400 / 20;
             long addMinutes = addSeconds / 60;
