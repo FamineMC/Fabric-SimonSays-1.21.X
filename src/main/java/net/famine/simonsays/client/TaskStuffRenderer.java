@@ -1,6 +1,7 @@
 package net.famine.simonsays.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.famine.simonsays.SimonSays;
 import net.famine.simonsays.component.LifeTimerComponent;
 import net.famine.simonsays.component.TaskTimerComponent;
 import net.minecraft.client.MinecraftClient;
@@ -11,6 +12,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,11 +31,11 @@ public class TaskStuffRenderer {
         long lifeTimerSeconds = lifeTimerComponent.lifeTimer / 20;
         long lifeTimerMinutes = lifeTimerSeconds / 60;
         long remainingLifeTimerSeconds = lifeTimerSeconds % 60;
-        var lifeTimer = Text.literal(String.format("%d:%02d", lifeTimerMinutes, remainingLifeTimerSeconds));
+        var lifeTimer = Text.literal("Time Left: ").append(String.format("%d:%02d", lifeTimerMinutes, remainingLifeTimerSeconds));
         long taskTimerSeconds = taskTimerComponent.taskTimer / 20;
         long taskTimerMinutes = taskTimerSeconds / 60;
         long remainingTaskTimerSeconds = taskTimerSeconds % 60;
-        var taskTimer = Text.literal(String.format("%d:%02d", taskTimerMinutes, remainingTaskTimerSeconds));
+        var taskTimer = Text.literal("Complete the task in: ").append(String.format("%d:%02d", taskTimerMinutes, remainingTaskTimerSeconds));
         var currentTask = taskTimerComponent.getTaskTextFromNumber(taskTimerComponent.randomTask);
         var renderer = MinecraftClient.getInstance().textRenderer;
         var halfOfLifeText = (MinecraftClient.getInstance().textRenderer.getWidth(lifeTimer) / 2);
@@ -46,8 +48,7 @@ public class TaskStuffRenderer {
         if (lifeTimerComponent.lifeTimer > 0) {
             RenderSystem.enableBlend();
             context.drawTextWithShadow(renderer, lifeTimer, textX, y + 14 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.GREEN);
-            context.drawTextWithShadow(renderer, taskTimer, textX2, y + 46 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
-            context.drawTextWithShadow(renderer, currentTask, textX3, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.WHITE);
+            context.drawTextWithShadow(renderer, taskTimer, textX2, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
             RenderSystem.disableBlend();
         }
     }

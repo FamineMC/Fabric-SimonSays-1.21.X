@@ -59,6 +59,9 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 this.lifeTimer = getLifeTimer();
                 sync();
             }
+            if (this.notSimon.getRandom().nextInt(200) == 0) {
+                this.notSimon.playSoundToPlayer(SimonSounds.HEARTBEAT_AMBIENT, SoundCategory.PLAYERS, 1f, 1f);
+            }
         }
         if (this.lifeTimer <= 0 && hasStartedTimer){
             youreDead = true;
@@ -68,6 +71,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
             this.sync();
         }
         if (youreDead){
+
             deathTimer--;
             this.sync();
             if(deathTimer <= 0){
