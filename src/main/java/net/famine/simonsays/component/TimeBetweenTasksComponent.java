@@ -66,6 +66,12 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
             }
         }
 
+        if (this.bufferTimer == 100){
+            if(!notSimon.getWorld().isClient()){
+                //insert incomingTaskAudio here
+            }
+        }
+
         if (this.bufferTimer == 0){
             Random random = new Random();
             int r = random.nextInt(min, max);
