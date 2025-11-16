@@ -196,24 +196,13 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 this.randomEntity = getRandomEntity();
                 this.randomStatus = getRandomStatus();
                 this.randomKeybind = getRandomKeybind();
-                sync();
+                this.sync();
             }
         }
-        if (this.bufferTimer > 0 && !taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
-            this.bufferTimer--;
-            sync();
-            notSimon.sendMessage(Text.literal("Buffer Timer: " + this.bufferTimer), true);
-        } else if (this.bufferTimer == 0) {
-            Random random = new Random();
-            int r = random.nextInt(min, max);
-            setBufferTimer(r);
-            sync();
-            notSimon.sendMessage(Text.literal("task assigned!!!"));
-        }
-
 
         if (this.taskHasBeenAssigned){
             this.taskHasBeenAssigned = false;
+            taskCurrentlyActive = true;
             randomTask = this.notSimon.getWorld().getRandom().nextInt(6);
             notSimon.sendMessage(Text.literal("Task Assigned!"));
             sync();
@@ -237,8 +226,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
-                    taskCurrentlyActive = true;
-                    sync();
+                    this.taskCurrentlyActive = true;
+                    this.sync();
                 }
                 case 1 -> {
                     Item randomConsume = consumeItemTaskItems.get(notSimon.getRandom().nextInt(consumeItemTaskItems.size()));
@@ -258,8 +247,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
-                    taskCurrentlyActive = true;
-                    sync();
+                    this.taskCurrentlyActive = true;
+                    this.sync();
                 }
                 case 2 ->{
                     EntityType<?> randomEntityEntity = killEntityTaskEntity.get(notSimon.getRandom().nextInt(killEntityTaskEntity.size()));
@@ -279,15 +268,15 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
-                    taskCurrentlyActive = true;
-                    sync();
+                    this.taskCurrentlyActive = true;
+                    this.sync();
                 }
                 case 3 ->{
                     Random random = new Random();
                     this.randomStatus = random.nextInt(potionEffectTaskEffect.size());
 
                     this.assignedTaskTime = 1600;
-                    sync();
+                    this.sync();
 
                     this.randomTask = 4;
 
@@ -298,14 +287,14 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = true;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
-                    taskCurrentlyActive = true;
-                    sync();
+                    this.taskCurrentlyActive = true;
+                    this.sync();
                 }
                 case 4 ->{
                     this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
 
                     this.assignedTaskTime = 200;
-                    sync();
+                    this.sync();
 
                     this.randomTask = 5;
 
@@ -318,8 +307,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = true;
                     this.taskSixActive = false;
-                    taskCurrentlyActive = true;
-                    sync();
+                    this.taskCurrentlyActive = true;
+                    this.sync();
                 }
                 case 5 ->{
                     this.randomKeybind = keybindTasksKeybinds.get(notSimon.getRandom().nextInt(keybindTasksKeybinds.size()));
@@ -338,12 +327,12 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = true;
-                    taskCurrentlyActive = true;
-                    sync();
+                    this.taskCurrentlyActive = true;
+                    this.sync();
                 }
             }
             setTaskTimer(this.assignedTaskTime);
-            sync();
+            this.sync();
 
         }
 
@@ -354,7 +343,6 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 if (this.taskSixActive) {
                     this.taskCurrentlyActive = false;
                     this.taskSixActive = false;
-                    sync();
                     lifeTimerComponent.addToSyncedLifeTimer(this.notSimon, 300);
                     long addSeconds = 300 / 20;
                     long addMinutes = addSeconds / 60;
@@ -362,7 +350,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.notSimon.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
                             .append(Text.literal(" added to your life!")), true);
                     this.notSimon.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
-                    sync();
+                    this.sync();
                 } else {
                     this.taskCurrentlyActive = false;
                     this.taskOneActive = false;
@@ -371,7 +359,6 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.taskFourActive = false;
                     this.taskFiveActive = false;
                     this.taskSixActive = false;
-                    sync();
                     lifeTimerComponent.subtractFromSyncedLifeTimer(this.notSimon, 1200);
                     long subtractSeconds = 1200 / 20;
                     long subtractMinutes = subtractSeconds / 60;
@@ -379,7 +366,23 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.notSimon.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
                             .append(Text.literal(" removed from your life. Do better next time.")), true);
                     this.notSimon.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
-                    sync();
+                    this.sync();
+                }
+
+            }
+        }
+        if (!(this.bufferTimer <= 0) && !taskCurrentlyActive && lifeTimerComponent.hasStartedTimer){
+            this.bufferTimer--;
+            this.sync();
+            notSimon.sendMessage(Text.literal("Buffer Timer: " + this.bufferTimer), true);
+            if (this.bufferTimer <= 0) {
+                Random random = new Random();
+                int r = random.nextInt(min, max);
+                setBufferTimer(r);
+                this.sync();
+                if(!taskCurrentlyActive && notSimon.getWorld().isClient()){
+                    this.taskHasBeenAssigned = true;
+                    this.sync();
                 }
 
             }
@@ -390,30 +393,30 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
         Text taskText;
         if (i == 1 && (this.randomPickupItem != null)) {
             taskText = Text.literal("Pick up the: ").append(this.randomPickupItem.getName());
-            sync();
+            this.sync();
         } else if (i == 2 && (this.randomConsumeItem != null)) {
             taskText = Text.literal("Consume the: ").append(this.randomConsumeItem.getName());
-            sync();
+            this.sync();
         } else if (i == 3 && (this.randomEntity != null)) {
              taskText = Text.literal("Kill the: ").append(this.randomEntity.getName());
-            sync();
+            this.sync();
         } else if (i == 4 && potionEffectTaskEffect != null) {
             taskText = Text.literal("Apply The Effect: ")
                     .append(Text.translatable(potionEffectTaskEffect.get(randomStatus).value().getTranslationKey()));
-            sync();
+            this.sync();
         } else if (i == 5 && this.randomKeybind != null) {
             taskText = Text.literal("Touch The: ")
                     .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
                     .append(Text.literal(" Key"));
-            sync();
+            this.sync();
         } else if (i == 6 && this.randomKeybind != null) {
             taskText = Text.literal("Don't Touch The: ")
                     .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
                     .append(Text.literal(" Key"));
-            sync();
+            this.sync();
         } else {
             taskText = Text.literal("No task assigned!");
-            sync();
+            this.sync();
         }
         return taskText;
     }
