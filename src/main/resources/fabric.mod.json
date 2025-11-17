@@ -3,12 +3,12 @@
   "id": "simonsays",
   "version": "${version}",
   "name": "Simon Says",
-  "description": "Follow Instructions, or Die Trying...",
+  "description": "Complete Your Tasks, or Die Trying...",
   "authors": [
     "Famine"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
+    "homepage": "https://www.youtube.com/@FamineMC",
     "sources": "https://github.com/FamineMC/Fabric-SimonSays-1.21.X"
   },
   "license": "ARR",
