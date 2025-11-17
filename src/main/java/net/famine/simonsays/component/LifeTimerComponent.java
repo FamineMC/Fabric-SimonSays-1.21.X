@@ -17,6 +17,8 @@ import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
+import java.util.Random;
+
 public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingComponent {
 
     public static final ComponentKey<LifeTimerComponent> KEY = ComponentRegistry.getOrCreate(SimonSays.id("lifetimer"), LifeTimerComponent.class);
@@ -25,7 +27,9 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
     public int lifeTimer = 0;
     public int deathTimer = 200;
+    public int ambientSoundTimer = 300;
     public boolean youreDead = false;
+    public boolean doJumpscareScreen = false;
 
     public boolean hasStartedTimer = false;
 
@@ -54,6 +58,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public void tick() {
         TimeBetweenTasksComponent betweenTasksComponent = TimeBetweenTasksComponent.KEY.get(notSimon);
         TaskTimerComponent taskTimerComponent = TaskTimerComponent.KEY.get(notSimon);
+        this.ambientSoundTimer--;
         if (!(this.lifeTimer <= 0)){
             this.lifeTimer--;
             sync();
@@ -61,20 +66,30 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
                 this.lifeTimer = getLifeTimer();
                 sync();
             }
-            if (this.notSimon.getRandom().nextInt(200) == 0) {
-                int random = this.notSimon.getRandom().nextBetween(0, 1);
-                if (random == 2) {
-                    this.notSimon.playSoundToPlayer(SimonSounds.HORROR_AMBIENT_1, SoundCategory.PLAYERS, 1f, 1f);
-                } else {
-                    this.notSimon.playSoundToPlayer(SimonSounds.HORROR_AMBIENT_2, SoundCategory.PLAYERS, 1f, 1f);
+            if (ambientSoundTimer <= 0) {
+                Random random = new Random();
+                this.ambientSoundTimer = random.nextInt(200, 400);
+                int randomSound = this.notSimon.getWorld().getRandom().nextInt(4);
+                SoundEvent sound;
+                switch (randomSound){
+                    case 0 -> {
+                        sound = SimonSounds.HORROR_AMBIENT_1;
+                    }case 1 -> {
+                        sound = SimonSounds.HORROR_AMBIENT_2;
+                    }case 2 -> {
+                        sound = SimonSounds.KNOCK;
+                    }default -> {
+                        sound = SimonSounds.HEARTBEAT_AMBIENT;
+                    }
                 }
+                if(!notSimon.getWorld().isClient()){
+                    this.notSimon.playSoundToPlayer(sound, SoundCategory.PLAYERS, 1f, 1f);
+                    sync();
+                }
+
+
             }
-            if (this.notSimon.getRandom().nextInt(300) == 0 ) {
-                this.notSimon.playSoundToPlayer(SimonSounds.HEARTBEAT_AMBIENT, SoundCategory.PLAYERS, 1f, 1f);
-            }
-            if (this.notSimon.getRandom().nextInt(300) == 0 ) {
-                this.notSimon.playSoundToPlayer(SimonSounds.KNOCK, SoundCategory.PLAYERS, 1f, 1f);
-            }
+
         }
         if (this.lifeTimer <= 0 && hasStartedTimer){
             youreDead = true;
@@ -88,6 +103,7 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
             deathTimer--;
             this.sync();
             if(deathTimer <= 0){
+                doJumpscareScreen = true;
                 youreDead = false;
                 this.sync();
                 if(!notSimon.getWorld().isClient()){

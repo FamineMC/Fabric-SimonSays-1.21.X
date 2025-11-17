@@ -10,8 +10,7 @@ public class SimonSounds {
 
 
     //Knocks
-    public static SoundEvent KNOCK = registerSoundEvent("knock");
-
+    public static SoundEvent KNOCK = registerSoundEvent("knock_sound");
 
     //Ambient Sounds
     public static SoundEvent HEARTBEAT_AMBIENT = registerSoundEvent("heartbeat_ambient");
@@ -20,6 +19,7 @@ public class SimonSounds {
 
     //Task Sounds
     public static SoundEvent TASK_ASSIGN = registerSoundEvent("task_assign");
+    public static SoundEvent TASK_INCOMING = registerSoundEvent("task_incoming");
     public static SoundEvent TASK_COMPLETE = registerSoundEvent("task_complete");
     public static SoundEvent TASK_FAIL = registerSoundEvent("task_fail");
 

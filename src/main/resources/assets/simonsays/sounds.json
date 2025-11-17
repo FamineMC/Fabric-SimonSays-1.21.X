@@ -44,6 +44,12 @@
       "simonsays:task_fail"
     ]
   },
+  "task_incoming": {
+    "subtitle": "subtitles.simonsays.task_incoming",
+    "sounds": [
+      "simonsays:task_incoming"
+    ]
+  },
   "jumpscare_sound": {
     "subtitle": "subtitles.simonsays.jumpscare_sound",
     "sounds": [

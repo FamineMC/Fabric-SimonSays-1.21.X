@@ -30,7 +30,7 @@ public abstract class InGameHudMixin {
     @Unique
     private static final Identifier NORMAL_OVERLAY = SimonSays.id("textures/misc/jumpscarepeekoverlay.png");
 
-    @Inject(method = "renderMiscOverlays", at = @At("HEAD"))
+    @Inject(method = "renderMiscOverlays", at = @At("TAIL"))
     private void render(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         var world = MinecraftClient.getInstance().world;
         if (world == null) return;
@@ -40,8 +40,13 @@ public abstract class InGameHudMixin {
         TaskStuffRenderer.renderBar(context, world, this.getCameraPlayer());
         if (lifeTimerComponent.youreDead) {
             this.renderOverlay(context, NORMAL_OVERLAY, 100f);
-            if (lifeTimerComponent.deathTimer < (200 * 0.05f)) {
-                this.renderOverlay(context, JUMPSCARE_OVERLAY, 100f);
+        }
+        if (lifeTimerComponent.deathTimer <= 0 && player.isDead() && lifeTimerComponent.doJumpscareScreen) {
+            lifeTimerComponent.sync();
+            this.renderOverlay(context, JUMPSCARE_OVERLAY, 100f);
+            if(player.isAlive()){
+                this.renderOverlay(context, JUMPSCARE_OVERLAY, 0f);
+                lifeTimerComponent.doJumpscareScreen = false;
             }
         }
     }

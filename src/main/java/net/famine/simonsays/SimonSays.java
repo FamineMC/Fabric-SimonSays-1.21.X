@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +59,7 @@ public class SimonSays implements ModInitializer, EntityComponentInitializer {
                 long addMinutes = addSeconds / 60;
                 long remainingAddSeconds = addSeconds % 60;
                 playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
-                        .append(Text.literal(" added to your life!")), true);
+                        .append(Text.literal(" added to your life!").formatted(Formatting.GREEN)), true);
                 playerEntity.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
             }
             return TypedActionResult.pass(stack);

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -45,8 +46,8 @@ public class LivingEntityMixin {
                 long addSeconds = 700 / 20;
                 long addMinutes = addSeconds / 60;
                 long remainingAddSeconds = addSeconds % 60;
-                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
-                        .append(Text.literal(" added to your life!")), true);
+                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds).formatted(Formatting.GREEN))
+                        .append(Text.literal(" added to your life!").formatted(Formatting.GREEN)), true);
                 playerEntity.clearStatusEffects();
                 playerEntity.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
                 taskTimerComponent.sync();
@@ -66,8 +67,8 @@ public class LivingEntityMixin {
                 long subtractSeconds = 900 / 20;
                 long subtractMinutes = subtractSeconds / 60;
                 long remainingSubtractSeconds = subtractSeconds % 60;
-                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
-                        .append(Text.literal(" removed from your life. Do better next time.")), true);
+                playerEntity.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds).formatted(Formatting.RED))
+                        .append(Text.literal(" removed from your life. Do better next time.").formatted(Formatting.RED)), true);
                 playerEntity.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
                 playerEntity.clearStatusEffects();
                 taskTimerComponent.sync();

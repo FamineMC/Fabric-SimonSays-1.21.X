@@ -17,6 +17,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -233,7 +234,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.randomTask = 1;
 
 
-                    this.notSimon.sendMessage(Text.literal("Pick up the: ").append(this.randomPickupItem.getName()));
+                    this.notSimon.sendMessage(Text.literal("Pick Up A ").append(this.randomPickupItem.getName()));
 
                     this.taskOneActive = true;
                     this.taskTwoActive = false;
@@ -256,7 +257,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
 
 
-                    this.notSimon.sendMessage(Text.literal("Consume the: ").append(this.randomConsumeItem.getName()));
+                    this.notSimon.sendMessage(Text.literal("Eat A ").append(this.randomConsumeItem.getName()));
 
                     this.taskOneActive = false;
                     this.taskTwoActive = true;
@@ -278,7 +279,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
 
 
-                    this.notSimon.sendMessage(Text.literal("Kill the: ").append(this.randomEntity.getName()));
+                    this.notSimon.sendMessage(Text.literal("Kill The ").append(this.randomEntity.getName()));
 
                     this.taskOneActive = false;
                     this.taskTwoActive = false;
@@ -296,7 +297,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     sync();
                     this.randomTask = 4;
 
-                    this.notSimon.sendMessage(Text.literal("Apply The Effect: ").append(Text.translatable(potionEffectTaskEffect.get(randomStatus).value().getTranslationKey())));
+                    this.notSimon.sendMessage(Text.literal("Drink A Potion Of ").append(Text.translatable(potionEffectTaskEffect.get(randomStatus).value().getTranslationKey())));
                     this.taskOneActive = false;
                     this.taskTwoActive = false;
                     this.taskThreeActive = false;
@@ -313,7 +314,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     this.randomTask = 5;
 
 
-                    this.notSimon.sendMessage(Text.literal("Touch The: ")
+                    this.notSimon.sendMessage(Text.literal("Press The ")
                             .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
                             .append(Text.literal(" Key")));
                     this.taskOneActive = false;
@@ -331,7 +332,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                     sync();
                     this.randomTask = 6;
 
-                   this.notSimon.sendMessage(Text.literal("Don't Touch The: ")
+                   this.notSimon.sendMessage(Text.literal("Don't Press The: ")
                             .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
                            .append(Text.literal(" Key")));
                     this.taskOneActive = false;
@@ -360,8 +361,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                         long addSeconds = 300 / 20;
                         long addMinutes = addSeconds / 60;
                         long remainingAddSeconds = addSeconds % 60;
-                        this.notSimon.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
-                                .append(Text.literal(" added to your life!")), true);
+                        this.notSimon.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds).formatted(Formatting.GREEN))
+                                .append(Text.literal(" added to your life!").formatted(Formatting.GREEN)), true);
                         this.notSimon.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
                         this.sync();
                     }
@@ -381,8 +382,8 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
                         long subtractSeconds = 1200 / 20;
                         long subtractMinutes = subtractSeconds / 60;
                         long remainingSubtractSeconds = subtractSeconds % 60;
-                        this.notSimon.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
-                                .append(Text.literal(" removed from your life. Do better next time.")), true);
+                        this.notSimon.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds).formatted(Formatting.RED))
+                                .append(Text.literal(" removed from your life. Do better next time.").formatted(Formatting.RED)), true);
                         this.notSimon.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
                         sync();
                     }

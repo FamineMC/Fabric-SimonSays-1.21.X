@@ -1,10 +1,13 @@
 package net.famine.simonsays.component;
 
 import net.famine.simonsays.SimonSays;
+import net.famine.simonsays.sound.SimonSounds;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -66,9 +69,10 @@ public class TimeBetweenTasksComponent implements AutoSyncedComponent, CommonTic
             }
         }
 
-        if (this.bufferTimer == 100){
+        if (this.bufferTimer == 60){
             if(!notSimon.getWorld().isClient()){
-                //insert incomingTaskAudio here
+                notSimon.sendMessage(Text.literal("Task Incoming... Get Ready").formatted(Formatting.GOLD), true);
+                notSimon.playSoundToPlayer(SimonSounds.TASK_INCOMING, SoundCategory.PLAYERS, 1f, 1f);
             }
         }
 

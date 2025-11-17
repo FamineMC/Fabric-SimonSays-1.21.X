@@ -10,6 +10,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 public record KeybindFailTaskPayload() implements CustomPayload {
@@ -43,8 +44,8 @@ public record KeybindFailTaskPayload() implements CustomPayload {
                     long subtractSeconds = 1200 / 20;
                     long subtractMinutes = subtractSeconds / 60;
                     long remainingSubtractSeconds = subtractSeconds % 60;
-                    player.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds))
-                            .append(Text.literal(" removed from your life. Do better next time.")), true);
+                    player.sendMessage(Text.literal(String.format("%d:%02d", subtractMinutes, remainingSubtractSeconds).formatted(Formatting.RED))
+                            .append(Text.literal(" removed from your life. Do better next time.").formatted(Formatting.RED)), true);
                     player.playSoundToPlayer(SimonSounds.TASK_FAIL, SoundCategory.PLAYERS, 1f, 1f);
                     taskTimerComponent.sync();
                 }

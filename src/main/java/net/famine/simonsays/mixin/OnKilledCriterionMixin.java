@@ -10,6 +10,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,12 +33,12 @@ public class OnKilledCriterionMixin {
             taskTimerComponent.setTaskSixActive(false);
             taskTimerComponent.setRandomTask(0);
             taskTimerComponent.taskTimer = 100;
-            lifeTimerComponent.addToSyncedLifeTimer(player, 400);
-            long addSeconds = 400 / 20;
+            lifeTimerComponent.addToSyncedLifeTimer(player, 500);
+            long addSeconds = 500 / 20;
             long addMinutes = addSeconds / 60;
             long remainingAddSeconds = addSeconds % 60;
-            player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
-                    .append(Text.literal(" added to your life!")), true);
+            player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds).formatted(Formatting.GREEN))
+                    .append(Text.literal(" added to your life!").formatted(Formatting.GREEN)), true);
             player.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
             taskTimerComponent.sync();
 

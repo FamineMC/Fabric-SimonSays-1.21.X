@@ -45,10 +45,13 @@ public class TaskStuffRenderer {
         var textX2 = x - halfOfTaskText;
         var textX3 = x - halfOfCurrentTaskText;
 
-        if (lifeTimerComponent.lifeTimer > 0) {
+        if (lifeTimerComponent.lifeTimer > 0 && !lifeTimerComponent.youreDead) {
             RenderSystem.enableBlend();
             context.drawTextWithShadow(renderer, lifeTimer, textX, y + 14 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.GREEN);
-            context.drawTextWithShadow(renderer, taskTimer, textX2, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
+            if(taskTimerComponent.taskCurrentlyActive){
+                context.drawTextWithShadow(renderer, taskTimer, textX2, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
+            }
+
             RenderSystem.disableBlend();
         }
     }

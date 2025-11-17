@@ -13,6 +13,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 public record KeybindTaskPayload() implements CustomPayload {
@@ -46,8 +47,8 @@ public record KeybindTaskPayload() implements CustomPayload {
                     long addSeconds = 300 / 20;
                     long addMinutes = addSeconds / 60;
                     long remainingAddSeconds = addSeconds % 60;
-                    player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds))
-                            .append(Text.literal(" added to your life!")), true);
+                    player.sendMessage(Text.literal(String.format("%d:%02d", addMinutes, remainingAddSeconds).formatted(Formatting.GREEN))
+                            .append(Text.literal(" added to your life!").formatted(Formatting.GREEN)), true);
                     player.playSoundToPlayer(SimonSounds.TASK_COMPLETE, SoundCategory.PLAYERS, 1f, 1f);
                     taskTimerComponent.sync();
                 }
