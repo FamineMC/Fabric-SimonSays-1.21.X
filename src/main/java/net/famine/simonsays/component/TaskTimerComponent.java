@@ -91,7 +91,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
         potionEffectTaskEffect.add(StatusEffects.FIRE_RESISTANCE);
         potionEffectTaskEffect.add(StatusEffects.STRENGTH);
-        potionEffectTaskEffect.add(StatusEffects.SPEED);
+        potionEffectTaskEffect.add(StatusEffects.REGENERATION);
         potionEffectTaskEffect.add(StatusEffects.POISON);
         potionEffectTaskEffect.add(StatusEffects.NIGHT_VISION);
 
