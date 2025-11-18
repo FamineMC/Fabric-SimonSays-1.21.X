@@ -49,6 +49,11 @@
     "sounds": [
       "simonsays:task_incoming"
     ]
+  },"pre_jump": {
+    "subtitle": "subtitles.simonsays.pre_jump",
+    "sounds": [
+      "simonsays:pre_jump"
+    ]
   },
   "jumpscare_sound": {
     "subtitle": "subtitles.simonsays.jumpscare_sound",

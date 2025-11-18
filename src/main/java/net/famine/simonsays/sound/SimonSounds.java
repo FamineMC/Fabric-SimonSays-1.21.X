@@ -17,6 +17,8 @@ public class SimonSounds {
     public static SoundEvent HORROR_AMBIENT_1 = registerSoundEvent("horror_ambient_1");
     public static SoundEvent HORROR_AMBIENT_2 = registerSoundEvent("horror_ambient_2");
 
+    public static SoundEvent PRE_JUMP = registerSoundEvent("pre_jump");
+
     //Task Sounds
     public static SoundEvent TASK_ASSIGN = registerSoundEvent("task_assign");
     public static SoundEvent TASK_INCOMING = registerSoundEvent("task_incoming");

@@ -92,6 +92,9 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
 
         }
         if (this.lifeTimer <= 0 && hasStartedTimer){
+            if(!notSimon.getWorld().isClient()){
+                notSimon.playSoundToPlayer(SimonSounds.PRE_JUMP, SoundCategory.PLAYERS, 1f, 1f);
+            }
             youreDead = true;
             hasStartedTimer = false;
             betweenTasksComponent.setBufferTimer(0);
