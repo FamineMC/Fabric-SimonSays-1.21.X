@@ -36,21 +36,18 @@ public class TaskStuffRenderer {
         long taskTimerMinutes = taskTimerSeconds / 60;
         long remainingTaskTimerSeconds = taskTimerSeconds % 60;
         var taskTimer = Text.literal("Complete the task in: ").append(String.format("%d:%02d", taskTimerMinutes, remainingTaskTimerSeconds));
-        var currentTask = taskTimerComponent.taskText.getString();
         var renderer = MinecraftClient.getInstance().textRenderer;
         var halfOfLifeText = (MinecraftClient.getInstance().textRenderer.getWidth(lifeTimer) / 2);
         var halfOfTaskText = (MinecraftClient.getInstance().textRenderer.getWidth(taskTimer) / 2);
-        var halfOfCurrentTaskText = (MinecraftClient.getInstance().textRenderer.getWidth(currentTask) / 2);
         var textX = x - halfOfLifeText;
         var textX2 = x - halfOfTaskText;
-        var textX3 = x - halfOfCurrentTaskText;
 
         if (lifeTimerComponent.lifeTimer > 0 && !lifeTimerComponent.youreDead) {
             RenderSystem.enableBlend();
             context.drawTextWithShadow(renderer, lifeTimer, textX, y + 14 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.GREEN);
             if(taskTimerComponent.taskCurrentlyActive){
-                context.drawTextWithShadow(renderer, currentTask, textX3, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.YELLOW);
-                context.drawTextWithShadow(renderer, taskTimer, textX2, y + 46 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
+
+                context.drawTextWithShadow(renderer, taskTimer, textX2, y + 30 + HEIGHT / 2 - renderer.fontHeight / 2, Colors.LIGHT_GRAY);
             }
 
             RenderSystem.disableBlend();

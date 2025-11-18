@@ -102,7 +102,6 @@ public class LifeTimerComponent implements AutoSyncedComponent, CommonTickingCom
             this.sync();
         }
         if (youreDead){
-
             deathTimer--;
             this.sync();
             if(deathTimer <= 0){

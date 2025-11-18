@@ -59,7 +59,6 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
     public int randomStatus = 0;
     public Integer randomKeybind = 0;
     public int randomTask = 0;
-    public Text taskText;
 
     public TaskTimerComponent(PlayerEntity notSimon) {
         this.notSimon = notSimon;
@@ -350,34 +349,7 @@ public class TaskTimerComponent implements AutoSyncedComponent, CommonTickingCom
 }
         }
 
-        if (randomTask == 1 && (this.randomPickupItem != null)) {
-            taskText = Text.literal("Pick up the: ").append(this.randomPickupItem.getName());
-            sync();
-        } else if (randomTask == 2 && (this.randomConsumeItem != null)) {
-            taskText = Text.literal("Eat A ").append(this.randomConsumeItem.getName());
-            sync();
-        } else if (randomTask == 3 && (this.randomEntity != null)) {
-            taskText = Text.literal("Kill the: ").append(this.randomEntity.getName());
-            sync();
-        } else if (randomTask == 4 && potionEffectTaskEffect != null) {
-            taskText = Text.literal("Apply The Effect: ")
-                    .append(Text.translatable(potionEffectTaskEffect.get(this.randomStatus).value().getTranslationKey()));
-            sync();
-        } else if (randomTask == 5 && this.randomKeybind != null && this.randomKeybind != 0) {
-            taskText = Text.literal("Touch The: ")
-                    .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
-                    .append(Text.literal(" Key"));
-            sync();
-        } else if (randomTask == 6 && this.randomKeybind != null && this.randomKeybind != 0) {
-            taskText = Text.literal("Don't Touch The: ")
-                    .append(InputUtil.fromKeyCode(this.randomKeybind, 0).getLocalizedText())
-                    .append(Text.literal(" Key"));
-            sync();
-        } else {
-            taskText = Text.literal("No task assigned!");
-            sync();
-        }
-        sync();
+
 
         if (lifeTimerComponent.hasStartedTimer && this.taskTimer == 0){
             if (this.taskCurrentlyActive) {
